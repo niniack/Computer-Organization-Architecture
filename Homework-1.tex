@@ -1,0 +1,238 @@
+\documentclass[11pt]{exam}
+\newcommand{\myname}{Nishant Aswani}
+\newcommand{\mynetid}{nsa325}
+\newcommand{\myemail}{nsa325@nyu.edu}
+\newcommand{\myhwtype}{Homework}
+\newcommand{\myhwnum}{1}
+\newcommand{\mycoursenumber}{ENGR-UH 3510}
+\newcommand{\myclassname}{Computer Organization and Architecture}
+\newcommand{\mylecture}{0}
+\newcommand{\mysection}{Z}
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+% Uncomment the following line to get Solarized-themed source listings
+% You will have had to already installed the solarized-light package
+% https://github.com/jez/latex-solarized
+%
+%\usepackage{solarized-light}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{NYU Abu Dhabi}}%
+{\textbf{}}%
+{\textbf{Division of Engineering}}
+
+\pagestyle{head}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[scale=0.15]{source/NYUAD-alt-logo.jpg}
+\end{center}
+
+{\vspace{1.5em}}
+
+\begin{center}
+    \Huge{\textbf{\mycoursenumber}}\\
+    {\vspace{0.5em}}
+    \Huge{\textbf{\myclassname}}
+\end{center}
+
+{\vspace{10em}}
+
+\begin{center}
+  \begin{tabular}{|rp{5.0cm}lll|}
+    \hline
+    &  &  &  & \\
+    &  &  &  & \\
+    \Large{\textbf{Name:}} & \Large{\myname}
+    
+    \  &  &  & \\
+    \Large{\textbf{Net ID:}} & \Large{\mynetid}
+    
+    \  &  &  & \\
+    \Large{\textbf{Assignment Title:}} & \Large{\myhwtype{} \myhwnum}
+    
+    \
+    
+    \  &  &  & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\
+
+{\newpage}
+
+
+\thispagestyle{plain}
+\begin{center}
+  {\Large \mycoursenumber{} \myhwtype{} \myhwnum} \\
+  \myname{} (\myemail{}) \\
+  \today
+\end{center}
+
+\setcounter{questionCounter}{0}
+
+\begin{namedquestion}{Question 1.2}
+Design for Moore's Law: The idea is similar to \textbf{option g} as it suggests accounting for new and upcoming technology in system design. \\
+
+Use Abstraction to Simplify Design: \textbf{option h}, partially relying on existing sensors means that certain technology does not necessarily have to be redesigned. \\
+
+Making the Common Case Fast: \textbf{option d}, express elevators travel to most popular floors, allowing people to skip unnecessary wait time. \\
+
+Performance via Parallelism: \textbf{option b}, because often several suspension bridge cables share the load. It can also refer to dependability via redundancy. \\
+
+Performance via Pipelining: \textbf{option a}, as it suggests specialization and assignment of tasks across a larger task. \\
+
+Performance via Prediction: \textbf{option c}, because these systems carry out predictions based on not necessarily certain weather/wind values. \\
+
+Hierarchy of Memories: \textbf{option e}, because library reserve desks hold recently requested books. Hence, procuring the books when picking up is made much faster, as it is "cached" and easy to access.\\
+
+Dependability via Redundancy: \textbf{option f}, as speed is increased indirectly by increasing gate area, making the transistor more dependable. 
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 1.12.1}
+Following the idea that the largest clock rate means the best performance, implies that P1 has the better performance. 
+
+Using the classic CPU performance equation:
+
+ \[\text{P1 CPU Time} = \frac{(5.0E9 \times 0.9)}{4E9} = 1.125s\]
+ \[\text{P2 CPU Time} = \frac{(1.0E9 \times 0.75)}{3E9} = 0.25s\]
+ 
+Hence, P2 has the better performance, however, this evaluation relies on all three factors.
+\end{namedquestion}
+
+\begin{namedquestion}{Question 1.12.2}
+ \[\text{P1 CPU Time}= \frac{(1.0E9 \times 0.9)}{4E9} = 0.225s\]
+ 
+ We see that P1 requires 0.225s seconds per program. We can now calculate the number of instructions P2 can carry out in this amount of time. 
+ 
+ \[\text{P2 Instructions}= \frac{(3E9\times0.225)}{0.75} = 0.9E9 \text{ instructions}\]
+ 
+Hence, P2 can carry out fewer instructions P1 in the same amount of time.
+\end{namedquestion}
+
+\begin{namedquestion}{Question 1.12.3}
+MIPS is an instruction execution rate, and thus it performs inversely to execution time. Thus, a higher MIPS value means faster computation. 
+
+\[\text{P1 MIPS}= \frac{5.0E9}{1.125\times1E6} = 4.4E3 \text{ MIPS}\]
+\[\text{P2 MIPS}= \frac{1.0E9}{0.25\times1E6} = 4.0E3 \text{ MIPS}\]
+
+According to the MIPS metric, P1 seems to have a better performance. However, this is counter to the answer found in 1.12.1, where P2 had a better CPU time. 
+
+MIPS fails to be a great performance measure as it does not account for instruction count. Hence, variance between programs on the same machine can lead to a wide range of MIPS values.
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 1.12.4}
+
+To calculate MFLOPS for both machines, we assume that 40\% of the instructions are floating point operations. We must also recalculate execution time for the FP operations.
+
+\[\text{P1 MFLOPS}= \frac{5.0E9 \times 0.4}{\frac{(5.0E9 \times 0.4 \times 0.9)}{4E9}\times1E6} = 4.4E3 \text{ MFLOPS}\]
+
+\[\text{P2 MFLOPS}= \frac{1.0E9 \times 0.4}{\frac{(1.0E9 \times 0.4 \times 0.75)}{3E9}\times1E6} = 4.0E3 \text{ MFLOPS}\]
+
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 1.13.1}
+Reducing the time for FP operations by 20\% would result in: 
+
+\[0.8*70s = 56s \text{ for FP operations, meaning a 14s reduction}\]
+
+a 14s reduction to 236s for the entire program.
+
+
+\end{namedquestion}
+\newpage
+
+\begin{namedquestion}{Question 1.13.3}
+Branch instructions are 40s in the 250s program. 
+
+\[\frac{40}{250} = 0.16\]
+
+This means that the time for branch instructions makes up 16\% of the program time. It is not possible to reduce program time by 20\% by simply reducing the time for branch instructions. 
+
+
+\end{namedquestion}
+
+\end{document}
+
