@@ -1,0 +1,346 @@
+\documentclass[11pt]{exam}
+\newcommand{\myname}{Nishant Aswani}
+\newcommand{\mynetid}{nsa325}
+\newcommand{\myemail}{nsa325@nyu.edu}
+\newcommand{\myhwtype}{Homework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhwnum}{2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mycoursenumber}{ENGR-UH 3511}
+\newcommand{\myclassname}{Computer Organization and Architecture}
+
+\newcommand{\cc}[1]{\texttt{#1}}
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{hhline}
+\usepackage[utf8]{inputenc}
+
+\usepackage[sorting=none,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+
+% \usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+% Uncomment the following line to get Solarized-themed source listings
+% You will have had to already installed the solarized-light package
+% https://github.com/jez/latex-solarized
+%
+%\usepackage{solarized-light}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{NYU Abu Dhabi}}%
+{\textbf{}}%
+{\textbf{Division of Engineering}}
+
+\pagestyle{head}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[scale=0.15]{etc/NYUAD-alt-logo.jpg}
+\end{center}
+
+{\vspace{1.5em}}
+
+\begin{center}
+    \Huge{\textbf{\mycoursenumber}}\\
+    {\vspace{0.5em}}
+    \Huge{\textbf{\myclassname}}
+\end{center}
+
+{\vspace{10em}}
+
+\begin{center}
+  \begin{tabular}{|rp{5.0cm}lll|}
+    \hline
+    &  &  &  & \\
+    &  &  &  & \\
+    \Large{\textbf{Name:}} & \Large{\myname}
+    
+    \  &  &  & \\
+    \Large{\textbf{Net ID:}} & \Large{\mynetid}
+    
+    \  &  &  & \\
+    \Large{\textbf{Assignment Title:}} & \Large{\myhwtype{} \myhwnum}
+    
+    \
+    
+    \  &  &  & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\
+
+{\newpage}
+
+
+\thispagestyle{plain}
+\begin{center}
+  {\Large \mycoursenumber{} \myhwtype{} \myhwnum} \\
+  \myname{} (\myemail{}) \\
+  \today
+\end{center}
+
+\setcounter{questionCounter}{0}
+
+\begin{namedquestion}{Question 2.3}
+
+We are given:
+\begin{itemize}
+    \itemsep0em 
+    \item value of i in register \$s3
+    \item value of j in register \$s4
+    \item base address or \&A[0] in register \$s6
+    \item base address or \&B[0] in register \$s7
+\end{itemize} 
+
+Hence, 
+\begin{verbatim}
+sub $t0, $s3, $s4     # i-j stored in register $t0
+sll $t0, $t0, 2       # (i-j)*4 to obtain offset, since i and j are 32 bit integers (1 word)
+add $t1, $t0, $s6     # add offset to the base address of array A
+lw  $t2, 0($t1)       # load the value in A[i-j] into register $t2
+sw  $t2, 32($s7)      # save the value in $t2 into B[8] in memory
+\end{verbatim}
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 2.4}
+We assume f and g contain 32-bit integers.
+
+We are given:
+\begin{itemize}
+    \itemsep0em 
+    \item value of f in register \$s0
+    \item value of g in register \$s1
+    \item base address or \&A[0] in register \$s6
+    \item base address or \&B[0] in register \$s7
+\end{itemize} 
+
+and the following assembly code, which has been commented to aid in solving the problem:
+
+\begin{verbatim}
+sll  $t0, $s0, 2     # save f*4 into $t0
+add  $t0, $s6, $t0   # add $t0 to address of A[0] to get new offset address and save at $t0
+sll  $t1, $s1, 2     # save g*4 into $t0
+add  $t1, $s7, $t1   # add $t1 to address of B[0] to get new offset address and save at $t1
+lw   $s0, 0($t0)     # obtain the value A[f] and save into $s0$
+addi $t2, $t0, 4     # save address of A[f+1] into $t2
+lw   $t0, 0($t2)     # load value of A[f+1] into $t0
+add  $t0, $t0, $s0   # save (value of A[f]) + (value of A[f+1]) into $t0
+sw,  $t0, 0($t1)     # save $t0 at B[g]
+\end{verbatim}
+
+\textbf{The corresponding C/C++ statement: 
+B[g] = A[f] + A[f+1]}
+
+\end{namedquestion}
+\newpage
+
+\begin{namedquestion}{Question 2.18.1}
+If MIPS were to be implemented with 128 register files, instructions would still need to be implemented with 32 bits, because 32 bits would still remain the word size in a 32 bit architecture. Somehow, all 128 registers would have to be addressable within the 32-bit instruction set.
+
+A traditional register instruction is broken down as follows:
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccccc}
+            \toprule
+            opcode & rs & rt & rd & shamt & funct\\
+            \midrule
+            6 bits & 5 bits & 5 bits & 5 bits & 5 bits & 5 bits\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+5 bits are able to address 32 registers, as $2^{5} = 32$. To address 128 bits, the instruction set would need to assign 7 bits to rs, rt, and rd, as $2^{7} = 128$.
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccccc}
+            \toprule
+            opcode & rs & rt & rd & shamt & funct\\
+            \midrule
+            ? bits & 7 bits & 7 bits & 7 bits & ? bits & ? bits\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+In the current implementation, the opcode size is 6 bits, allowing $2^6 = 64$ unique instructions. If the instruction set were to expand to 4 times the current size of 50, according to a Berkeley reference sheet\cite{mipsref}, then there would be around 200 instructions. However, the 28\cite{mipsref} R-type instructions all use an opcode of 0, and are then specialized using the funct code.
+
+\textbf{Assuming} expanding the set of instructions would not increase the R-type instructions, we can say that the opcode would have to account for $200-28 = 172$ unique instructions. This would require 8 bits for the opcode, which could actually account for potentially 256 instructions.  
+
+Thus, in this new implementation, we could remove the R-type instructions' reliance on the funct code and rely on the opcode to distinguish between R-type codes. 
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccccc}
+            \toprule
+            opcode & rs & rt & rd & shamt & funct\\
+            \midrule
+            8 bits & 7 bits & 7 bits & 7 bits & ? bits & ? bits\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+Since the func code is rendered useless, the remaining 3 bits could all be assigned to \cc{shamt}. 
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccccc}
+            \toprule
+            opcode & rs & rt & rd & shamt & funct\\
+            \midrule
+            8 bits & 7 bits & 7 bits & 7 bits & 3 bits & 0 bits\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+\end{namedquestion}
+\newpage
+\begin{namedquestion}{Question 2.18.2}
+A traditional I-type instruction is broken down as follows:
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccc}
+            \toprule
+            opcode & rs & rt & immediate\\
+            \midrule
+            6 bits & 5 bits & 5 bits & 16 bits\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+As explained in response to Question 2.18.1, there must be 7 bits to address 128 register files. 
+
+Moreover, the opcode convention would have to be retained for all instruction types, hence assigning 8 bits to the opcode. 
+
+The remaining 10 bits would be assigned to the immediate code, resulting in the following implementation: 
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccc}
+            \toprule
+            opcode & rs & rt & immediate\\
+            \midrule
+            8 bits & 7 bits & 7 bits & 10 bits\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+\end{namedquestion}
+
+\begin{namedquestion}{Question 2.18.3}
+Implementing the changes from the two responses above, the shift amount would be reduced from 5 bits to 3 bits. So, any shifting requiring more than 3 bits may have to be carried out in smaller chunks, which would increase the size of a MIPS assembly program. However, implementing shift in the format of an I-type instruction may decrease the amount of shift instructions, because it would able to accomodate for larger shifts. This would now be possible because R-type instructions would no longer be differentiated using func codes. 
+
+The functionality for immediate instructions would also be stunted, and may have to be carried out in chunks. For example, adding 1025, using \cc{addi}, to a register would require 2 instructions because \cc{addi} would only be able to accommodate 10 bits, and thus 1024 as a maximum value. 
+
+On the other hand, for larger programs, having access to more registers could reduce the communication overhead between memory and the CPU and the number of load/save instructions. More registers means fewer data have to be saved to memory to make room for new data. 
+
+
+\end{namedquestion}
+
+\printbibliography
+
+\end{document}
+
