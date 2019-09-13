@@ -1,0 +1,113 @@
+gcc -o noOptimization linpack.c -lm
+sudo perf stat ./noOptimization 
+
+LINPACK benchmark, Double precision.
+Machine precision:  15 digits.
+Array size 100 X 100.
+Average rolled and unrolled performance:
+
+    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS
+----------------------------------------------------
+    2048   0.62  79.91%   5.31%  14.78%  682898.594
+    4096   1.25  79.93%   5.30%  14.77%  677300.656
+    8192   2.52  79.92%   5.32%  14.76%  673195.880
+   16384   4.99  79.90%   5.30%  14.79%  680961.693
+   32768   9.96  79.93%   5.29%  14.78%  682137.849
+   65536  19.92  79.91%   5.30%  14.79%  682114.902
+
+Enter array size (q to quit) [200]:  q
+
+ Performance counter stats for './noOptimization':
+
+         39,921.21 msec task-clock                #    0.926 CPUs utilized          
+               139      context-switches          #    0.003 K/sec                  
+                 4      cpu-migrations            #    0.000 K/sec                  
+                67      page-faults               #    0.002 K/sec                  
+   122,796,640,077      cycles                    #    3.076 GHz                    
+   366,548,028,130      instructions              #    2.99  insn per cycle         
+    15,293,428,879      branches                  #  383.090 M/sec                  
+       152,336,770      branch-misses             #    1.00% of all branches        
+
+      43.132296218 seconds time elapsed
+
+      39.697325000 seconds user
+       0.224007000 seconds sys
+
+
+******************************************************************
+
+gcc -o optimizationLevelOne -O1 linpack.c -lm
+sudo perf stat ./optimizationLevelOne 
+
+
+LINPACK benchmark, Double precision.
+Machine precision:  15 digits.
+Array size 100 X 100.
+Average rolled and unrolled performance:
+
+    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS
+----------------------------------------------------
+    8192   0.72  68.85%   5.73%  25.42%  2700865.420
+   16384   1.44  68.84%   5.71%  25.46%  2701180.479
+   32768   2.88  68.87%   5.71%  25.42%  2691555.321
+   65536   5.75  68.83%   5.72%  25.45%  2702318.454
+  131072  11.49  68.84%   5.73%  25.44%  2702859.407
+
+Enter array size (q to quit) [200]:  q 
+
+ Performance counter stats for './optimizationLevelOne':
+
+         23,029.94 msec task-clock                #    0.813 CPUs utilized          
+               141      context-switches          #    0.006 K/sec                  
+                 3      cpu-migrations            #    0.000 K/sec                  
+                68      page-faults               #    0.003 K/sec                  
+    70,893,522,712      cycles                    #    3.078 GHz                    
+   234,689,115,718      instructions              #    3.31  insn per cycle         
+    26,551,303,639      branches                  # 1152.903 M/sec                  
+       151,894,701      branch-misses             #    0.57% of all branches        
+
+      28.339501583 seconds time elapsed
+
+      22.374523000 seconds user
+       0.655839000 seconds sys
+
+
+
+******************************************************************
+
+gcc -o optimizationLevelTwo -O1 linpack.c -lm
+sudo perf stat ./optimizationLevelTwo 
+
+
+
+LINPACK benchmark, Double precision.
+Machine precision:  15 digits.
+Array size 100 X 100.
+Average rolled and unrolled performance:
+
+    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS
+----------------------------------------------------
+    8192   0.71  68.65%   5.78%  25.58%  2734660.303
+   16384   1.42  68.58%   5.76%  25.67%  2732643.967
+   32768   2.88  68.62%   5.78%  25.60%  2700326.209
+   65536   5.75  68.66%   5.76%  25.58%  2706987.548
+  131072  11.36  68.61%   5.76%  25.63%  2739614.999
+
+Enter array size (q to quit) [200]:  q
+
+ Performance counter stats for './optimizationLevelTwo':
+
+         22,852.84 msec task-clock                #    0.884 CPUs utilized          
+               120      context-switches          #    0.005 K/sec                  
+                 1      cpu-migrations            #    0.000 K/sec                  
+                66      page-faults               #    0.003 K/sec                  
+    70,121,964,990      cycles                    #    3.068 GHz                    
+   207,965,402,026      instructions              #    2.97  insn per cycle         
+    23,845,508,546      branches                  # 1043.438 M/sec                  
+       151,842,395      branch-misses             #    0.64% of all branches        
+
+      25.860533063 seconds time elapsed
+
+      22.296726000 seconds user
+       0.555918000 seconds sys
+

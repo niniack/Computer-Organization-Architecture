@@ -1,0 +1,109 @@
+daxpy_r() /home/niniack/Documents/Computer Organization/linpack/noOP/noOptimization
+Event: cycles:ppp
+
+Percent        
+               
+               
+             Disassembly of section .text:
+               
+             00000000000020a5 <daxpy_r>:
+             daxpy_r(): 
+  0.04         push   %rbp    
+  0.14         mov    %rsp,%rbp
+  0.16         mov    %edi,-0x14(%rbp)
+  0.05         movsd  %xmm0,-0x20(%rbp)
+  0.01         mov    %rsi,-0x28(%rbp)
+  0.11         mov    %edx,-0x18(%rbp)
+  0.17         mov    %rcx,-0x30(%rbp)
+  0.05         mov    %r8d,-0x34(%rbp)
+  0.31         cmpl   $0x0,-0x14(%rbp)
+  0.12       ↓ jle    169     
+  0.16         pxor   %xmm0,%xmm0
+  0.32         ucomisd -0x20(%rbp),%xmm0
+  0.14       ↓ jp     3f      
+  0.14         pxor   %xmm0,%xmm0
+  0.07         ucomisd -0x20(%rbp),%xmm0
+  0.16       ↓ je     16c     
+  0.18   3f:   cmpl   $0x1,-0x18(%rbp)
+  0.03       ↓ jne    4f      
+  0.02         cmpl   $0x1,-0x34(%rbp)
+  0.18       ↓ je     101     
+         4f:   movl   $0x1,-0x8(%rbp)
+               movl   $0x1,-0x4(%rbp)
+               cmpl   $0x0,-0x18(%rbp)
+             ↓ jns    75      
+               mov    $0x1,%eax
+               sub    -0x14(%rbp),%eax
+               imul   -0x18(%rbp),%eax
+               add    $0x1,%eax
+               mov    %eax,-0x8(%rbp)
+         75:   cmpl   $0x0,-0x34(%rbp)
+             ↓ jns    8d      
+               mov    $0x1,%eax
+               sub    -0x14(%rbp),%eax
+               imul   -0x34(%rbp),%eax
+               add    $0x1,%eax
+               mov    %eax,-0x4(%rbp)
+         8d:   movl   $0x0,-0xc(%rbp)
+             ↓ jmp    f7      
+         96:   mov    -0x4(%rbp),%eax
+               cltq           
+               lea    0x0(,%rax,8),%rdx
+               mov    -0x30(%rbp),%rax
+               add    %rdx,%rax
+               movsd  (%rax),%xmm1
+               mov    -0x8(%rbp),%eax
+               cltq           
+               lea    0x0(,%rax,8),%rdx
+               mov    -0x28(%rbp),%rax
+               add    %rdx,%rax
+               movsd  (%rax),%xmm0
+               mulsd  -0x20(%rbp),%xmm0
+               mov    -0x4(%rbp),%eax
+               cltq           
+               lea    0x0(,%rax,8),%rdx
+               mov    -0x30(%rbp),%rax
+               add    %rdx,%rax
+               addsd  %xmm1,%xmm0
+               movsd  %xmm0,(%rax)
+               mov    -0x18(%rbp),%eax
+               add    %eax,-0x8(%rbp)
+               mov    -0x34(%rbp),%eax
+               add    %eax,-0x4(%rbp)
+               addl   $0x1,-0xc(%rbp)
+         f7:   mov    -0xc(%rbp),%eax
+               cmp    -0x14(%rbp),%eax
+             ↑ jl     96      
+             ↓ jmp    16d     
+  0.14  101:   movl   $0x0,-0xc(%rbp)
+  0.17       ↓ jmp    15f     
+  0.26  10a:   mov    -0xc(%rbp),%eax
+  0.06         cltq           
+  0.07         lea    0x0(,%rax,8),%rdx
+ 11.01         mov    -0x30(%rbp),%rax
+  0.10         add    %rdx,%rax
+  3.40         movsd  (%rax),%xmm1
+  0.03         mov    -0xc(%rbp),%eax
+  9.80         cltq           
+  0.03         lea    0x0(,%rax,8),%rdx
+  1.40         mov    -0x28(%rbp),%rax
+  0.03         add    %rdx,%rax
+ 10.04         movsd  (%rax),%xmm0
+  7.04         mulsd  -0x20(%rbp),%xmm0
+  0.73         mov    -0xc(%rbp),%eax
+  0.00         cltq           
+  7.63         lea    0x0(,%rax,8),%rdx
+  2.93         mov    -0x30(%rbp),%rax
+  0.80         add    %rdx,%rax
+ 16.96         addsd  %xmm1,%xmm0
+ 11.19         movsd  %xmm0,(%rax)
+  0.05         addl   $0x1,-0xc(%rbp)
+  0.30  15f:   mov    -0xc(%rbp),%eax
+  0.38         cmp    -0x14(%rbp),%eax
+ 11.15       ↑ jl     10a     
+  0.61       ↓ jmp    16d     
+        169:   nop            
+             ↓ jmp    16d     
+        16c:   nop            
+  0.79  16d:   pop    %rbp    
+  0.35       ← retq           

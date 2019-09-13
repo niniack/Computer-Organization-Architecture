@@ -1,0 +1,70 @@
+daxpy_r() /home/niniack/Documents/Computer Organization/linpack/optimizationLevelOne
+Event: cycles:ppp
+
+Percent        
+               
+               
+            Disassembly of section .text:
+               
+            00000000000009ff <daxpy_r>:
+            daxpy_r():
+  0.98        test   %edi,%edi
+            ↓ jle    c7     
+  0.18        pxor   %xmm1,%xmm1
+  0.44        ucomisd %xmm1,%xmm0
+  0.10        setnp  %al    
+  1.00        mov    $0x0,%r9d
+  0.22        cmovne %r9d,%eax
+  0.44        test   %al,%al
+            ↓ jne    c7     
+  0.07        cmp    $0x1,%edx
+            ↓ jne    64     
+  0.95        cmp    $0x1,%r8d
+            ↓ jne    64     
+  0.20        test   %edi,%edi
+            ↓ jle    62     
+  0.47        lea    -0x1(%rdi),%eax
+  0.08        lea    0x8(,%rax,8),%rdx
+  1.37        mov    $0x0,%eax
+  1.17  44:   movapd %xmm0,%xmm1
+ 30.50        mulsd  (%rsi,%rax,1),%xmm1
+  6.40        addsd  (%rcx,%rax,1),%xmm1
+ 29.86        movsd  %xmm1,(%rcx,%rax,1)
+  0.82        add    $0x8,%rax
+  0.73        cmp    %rax,%rdx
+ 23.21      ↑ jne    44     
+  0.82        repz   retq   
+        62:   repz   retq   
+        64:   mov    $0x1,%eax
+              test   %edx,%edx
+            ↓ js     b0     
+        6d:   mov    $0x1,%r9d
+              test   %r8d,%r8d
+            ↓ js     ba     
+        78:   test   %edi,%edi
+            ↓ jle    c7     
+              push   %rbx   
+              mov    $0x0,%r10d
+        83:   movslq %r9d,%r11
+              lea    (%rcx,%r11,8),%r11
+              movslq %eax,%rbx
+              movapd %xmm0,%xmm1
+              mulsd  (%rsi,%rbx,8),%xmm1
+              addsd  (%r11),%xmm1
+              movsd  %xmm1,(%r11)
+              add    %edx,%eax
+              add    %r8d,%r9d
+              add    $0x1,%r10d
+              cmp    %r10d,%edi
+            ↑ jne    83     
+              pop    %rbx   
+            ← retq          
+        b0:   sub    %edi,%eax
+              imul   %edx,%eax
+              add    $0x1,%eax
+            ↑ jmp    6d     
+        ba:   sub    %edi,%r9d
+              imul   %r8d,%r9d
+              add    $0x1,%r9d
+            ↑ jmp    78     
+        c7:   repz   retq   

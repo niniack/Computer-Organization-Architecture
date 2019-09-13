@@ -1,0 +1,28 @@
+daxpy_r.constprop.7() /home/niniack/Documents/Computer Organization/linpack/optimizationLevelTwo
+Event: cycles:ppp
+
+Percent        
+               
+               
+            Disassembly of section .text:
+               
+            0000000000001a60 <daxpy_r.constprop.7>:
+            daxpy_r.constprop.7():
+  0.37        test   %edi,%edi
+  0.09        setle  %cl    
+  0.99      ↓ jle    36     
+  0.04        pxor   %xmm1,%xmm1
+  0.41        ucomisd %xmm1,%xmm0
+  0.14        setnp  %al    
+  0.98        cmovne %ecx,%eax
+  0.14        test   %al,%al
+            ↓ jne    36     
+  0.28        xor    %eax,%eax
+  0.86  1b:   movsd  (%rsi,%rax,8),%xmm1
+ 33.56        mulsd  %xmm0,%xmm1
+ 13.24        addsd  (%rdx,%rax,8),%xmm1
+ 32.94        movsd  %xmm1,(%rdx,%rax,8)
+  0.35        add    $0x1,%rax
+  0.28        cmp    %eax,%edi
+ 12.11      ↑ jg     1b     
+  3.23  36:   repz   retq   
