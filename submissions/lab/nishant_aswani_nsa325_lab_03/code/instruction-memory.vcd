@@ -1,0 +1,45 @@
+$date
+	Sun Sep 15 11:45:44 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module instruction_memory_tb $end
+$var wire 32 ! instruction [31:0] $end
+$var reg 32 " sendAddress [31:0] $end
+$scope module im $end
+$var wire 32 # instruction [31:0] $end
+$var wire 32 $ readAddress [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b1 $
+b100001001010100000000000000001 #
+b1 "
+b100001001010100000000000000001 !
+$end
+#10
+b10001011101011011111000000001101 !
+b10001011101011011111000000001101 #
+b10 "
+b10 $
+#20
+b11011110101011011011101010111110 !
+b11011110101011011011101010111110 #
+b11 "
+b11 $
+#30
+b1000010010100000000100000 !
+b1000010010100000000100000 #
+b0 "
+b0 $
+#40
+b100001001010100000000000000001 !
+b100001001010100000000000000001 #
+b1 "
+b1 $

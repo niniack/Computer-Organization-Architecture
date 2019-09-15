@@ -1,5 +1,11 @@
-`ifndef PROGRAMCOUNTER_V
-`define PROGRAMCOUNTER_V
+// File: program-counter.v
+// Name: Nishant Aswani
+// Instructor: Cristoforos Vasilatos
+// Course: Computer Organization and Architecture (ENGR-UH 3511) Fall 2019
+// Due: Sep 18 2019
+
+`ifndef PROGRAM_COUNTER_V
+`define PROGRAM_COUNTER_V
 
 module program_counter (clk, rst, nextAddress, currentAddress);
 

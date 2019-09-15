@@ -1,3 +1,9 @@
+// File: program-counter-tb.v
+// Name: Nishant Aswani
+// Instructor: Cristoforos Vasilatos
+// Course: Computer Organization and Architecture (ENGR-UH 3511) Fall 2019
+// Due: Sep 18 2019
+
 `include "program-counter.v"
 
 module program_counter_tb;
