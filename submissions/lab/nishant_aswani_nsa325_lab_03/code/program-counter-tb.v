@@ -11,7 +11,7 @@ module program_counter_tb;
   reg clk = 0;
   wire rst = 0;
   reg [31:0] nextAddress = 32'b11101110_11111001_11001010_11101110;
-  wire [31:0] currentAddress = 32'b01000011_11001101_11100100_11111110;
+  wire [31:0] currentAddress;
 
   program_counter pc(
     .clk(clk),
