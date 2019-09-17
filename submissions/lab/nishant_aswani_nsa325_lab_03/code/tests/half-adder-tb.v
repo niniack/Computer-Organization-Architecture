@@ -4,7 +4,7 @@
 // Course: Computer Organization and Architecture (ENGR-UH 3511) Fall 2019
 // Due: Sep 18 2019
 
-`include "half-adder.v"
+`include "../half-adder.v"
 
 module half_adder_tb;
 

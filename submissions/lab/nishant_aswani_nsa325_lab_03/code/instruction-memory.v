@@ -12,7 +12,7 @@ module instruction_memory (readAddress, instruction);
   input wire [31:0] readAddress;
   output wire [31:0] instruction;
 
-  reg [31:0] mem[3:0];
+  reg [31:0] mem[31:0];
 
   initial begin
     mem[0] <= 32'b000000_01000_01001_0100000000100000;    //ADD $t0 $t0 $t1
