@@ -6,7 +6,6 @@
 
 `include "../data-memory.v"
 
-
 module data_memory_tb;
 
   reg clk = 0;
