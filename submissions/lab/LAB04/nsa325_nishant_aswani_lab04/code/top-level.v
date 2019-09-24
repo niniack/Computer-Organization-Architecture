@@ -28,6 +28,7 @@ module top_level(clk,rst);
   // reg MemtoReg = 0;
   // reg memWrite = 0;
   // reg memRead = 0;
+  // reg PCSrc = 0;
 
   // Control Logic (Hard-Coded)
   ///////// PROGRAM 2 /////////
@@ -38,37 +39,40 @@ module top_level(clk,rst);
   reg MemtoReg = 1;
   reg memWrite = 0;
   reg memRead = 0;
+  reg PCSrc = 0;
 
   // Program Counter
-  reg [31:0] PCin;
-  wire [31:0] PCnext;
-  wire [31:0] PCout;
+  reg [31:0] PCin;          // value that goes into PC, gets value from PCnext
+  wire [31:0] PCnext;       // wire used for storing PCout + 4
+  wire [31:0] PCout;        // value sent to IM
+  wire [31:0] PCbranch;     // value used for storing output of PCin and offset
+  wire [31:0] PCMUXout;     // value that decides between PCbranch and PCin
 
   // Instruction Memory
-  wire [31:0] IMout;
+  wire [31:0] IMout;        // instruction from IM
 
   // Register File
-  wire [31:0] RFout1;
-  wire [31:0] RFout2;
-  wire [31:0] RFWriteData;
+  wire [31:0] RFout1;       // register 1 output
+  wire [31:0] RFout2;       // register 2 output
+  wire [31:0] RFWriteData;  // data to be written in
 
   // RegFile Mux
-  wire [4:0] RFWriteReg;
+  wire [4:0] RFWriteReg;    // address of register to be written in
 
   // Sign Extend
-  wire [31:0] SextOut;
+  wire [31:0] SextOut;      // result of sign extension
 
   // Shift Left Logical by 2
-  wire [31:0] SLLOut;
+  wire [31:0] SLLOut = 32'd0; // result of shift left 2
 
   // ALU
-  wire [31:0] ALUin1;
-  wire [31:0] ALUin2;
-  wire [31:0] ALUout;
-  wire ALUzero;
+  wire [31:0] ALUin1;       // argument A for ALU
+  wire [31:0] ALUin2;       // argument B for ALU
+  wire [31:0] ALUout;       // output from ALU
+  wire ALUzero;             // zero flag from ALU
 
   // Data Memory
-  wire [31:0] DMout;
+  wire [31:0] DMout;        // data read from data memory
 
 
   ////////////////////////////
@@ -77,7 +81,7 @@ module top_level(clk,rst);
   program_counter pc(
     .clk(clk),
     .rst(rst),
-    .in(PCin),
+    .in(PCMUXout),
     .out(PCout)
     );
 
@@ -148,22 +152,39 @@ module top_level(clk,rst);
     .memWrite(memWrite),
     .memRead(memRead)
     );
+  mux #(32) pcmux(
+    .inA(PCin),
+    .inB(PCbranch),
+    .out(PCMUXout),
+    .select(PCSrc)
+    );
 
 
   ////////////////
   /// PC LOGIC ///
   ////////////////
 
+  // half adder: add 4 to output of PC and send it next
   assign PCnext = PCout + 4;
 
+
   always@(*) begin
+    // if reset, PCin must be 0
     if (rst) begin
       PCin <= 32'b0;
     end
+    // otherwise, transfer the PCnext value to PCin
     else begin
       PCin <= PCnext;
     end
   end
+
+  ////////////////////
+  /// BRANCH LOGIC ///
+  ////////////////////
+
+  // add the offset to PCin
+  assign PCbranch = SLLOut + PCin;
 
   /////////////////
   /// ALU LOGIC ///
