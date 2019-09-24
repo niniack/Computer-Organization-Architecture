@@ -9,10 +9,10 @@
 
 module instruction_memory (readAddress, instruction);
 
-  input wire [31:0] readAddress;
-  output wire [31:0] instruction;
+  input wire [31:0] readAddress;  // address for instruction
+  output wire [31:0] instruction; // instruction at address
 
-  reg [31:0] mem[31:0];
+  reg [31:0] mem[31:0]; //32 by 32 bit instruction memory
 
   initial begin
     mem[0] <= 32'b000000_01000_01001_0100000000100000;    //ADD $t0 $t0 $t1
@@ -21,6 +21,7 @@ module instruction_memory (readAddress, instruction);
     mem[3] <= 32'b110111_10101_01101_1011101010111110;    //LD $t5 0xBABE $s5
   end
 
+  //assign relevant instruction given the register memory
   assign instruction = mem[readAddress[3:0]][31:0];
 
 endmodule

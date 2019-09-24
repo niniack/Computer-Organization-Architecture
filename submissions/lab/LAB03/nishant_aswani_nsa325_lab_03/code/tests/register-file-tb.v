@@ -9,18 +9,18 @@
 
 module register_file_tb;
 
-  reg clk = 0;
-  reg rst;
+  reg clk = 0;                     //  clock
+  reg rst;                         //  async reset
 
-  reg [4:0] readRegisterOne;
-  reg [4:0] readRegisterTwo;
-  reg [4:0] writeRegister;
+  reg [4:0] readRegisterOne;       //  address for first read register
+  reg [4:0] readRegisterTwo;       //  address for second read register
+  reg [4:0] writeRegister;         //  address for write register
 
-  reg [31:0] writeData;
-  reg writeEnable;
+  reg [31:0] writeData;            //  data to be written into write register
+  reg writeEnable;                 //  enable flag to change register
 
-  wire [31:0] readDataOne;
-  wire [31:0] readDataTwo;
+  wire [31:0] readDataOne;         //  data to be sent to ALU
+  wire [31:0] readDataTwo;         //  data to be sent to ALU
 
   register_file rf(
     .clk(clk),
@@ -70,6 +70,7 @@ module register_file_tb;
       writeData <= 32'b01010000_11010001_11101011_00001011; //0x50D1EBOB
 
       #5;
+      // reset all register values to 0
       writeEnable <= 0;
       rst <= 1;
 

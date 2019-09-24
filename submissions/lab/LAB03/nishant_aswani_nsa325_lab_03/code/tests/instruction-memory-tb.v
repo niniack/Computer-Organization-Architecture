@@ -8,8 +8,8 @@
 
 module instruction_memory_tb;
 
-  reg [31:0] sendAddress = 32'b00000000_00000000_00000000_00000000;
-  wire [31:0] instruction;
+  reg [31:0] sendAddress;   // address for instruction
+  wire [31:0] instruction;  // instruction at address
 
   instruction_memory im(
     .readAddress(sendAddress),
@@ -20,14 +20,26 @@ module instruction_memory_tb;
     $dumpfile("instruction-memory.vcd");
     $dumpvars(0, instruction_memory_tb);
 
+    // send address 1
+    // expected instruction ADDI $t2 $t1 0x0001
+    // 0x212A0001
     sendAddress <= 32'b00000000_00000000_00000000_00000001;
-    #10;
+    #5;
+    // send address 2
+    // expected instruction LWL $t5 0xF00D $sp
+    // 0x8BADF00D
     sendAddress <= 32'b00000000_00000000_00000000_00000010;
-    #10;
+    #5;
+    // send address 3
+    // expected address LD $t5 0xBABE $s5
+    // 0xDEADBABE
     sendAddress <= 32'b00000000_00000000_00000000_00000011;
-    #10;
+    #5;
+
+    // send address 0
+    // expected instruction ADD $t0 $t0 $t1
+    // 0x01094020
     sendAddress <= 32'b00000000_00000000_00000000_00000000;
-    #10
-    sendAddress <= 32'b00000000_00000000_00000000_00000001;
+    #5;
   end
 endmodule

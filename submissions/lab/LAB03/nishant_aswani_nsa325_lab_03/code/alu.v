@@ -23,7 +23,7 @@ module alu(clk, inA, inB, funct, zero, out);
       4'b0001 : out <= inA | inB; // code 1 does a bitwise or
       4'b0010 : out <= inA + inB; // code 2 does addition
       4'b0011 : out <= inA - inB; // code 3 does subtraction
-      4'b0100 : out <= inA ^ inB; // code 4 does a bitwise XOR
+      4'b0100 : out <= inA ^ inB; // code 4 does a bitwise xor
     endcase
   end
 

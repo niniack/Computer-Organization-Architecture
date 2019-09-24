@@ -8,10 +8,10 @@
 
 module program_counter_tb;
 
-  reg clk = 0;
-  wire rst = 0;
-  reg [31:0] nextAddress = 32'b11101110_11111001_11001010_11101110;
-  wire [31:0] currentAddress;
+  reg clk = 0;                  //clock
+  wire rst = 0;                 //reset
+  reg [31:0] nextAddress;       //input address
+  wire [31:0] currentAddress;   //output address
 
   program_counter pc(
     .clk(clk),
@@ -28,13 +28,17 @@ module program_counter_tb;
     $dumpfile("program-counter.vcd");
     $dumpvars(0, program_counter_tb);
 
+    // expected output: 0x00F9CAF2
     nextAddress <= 32'b00000000_11111001_11001010_11101110;
     #10;
+    // expected output: 0xFFF9CAF2
     nextAddress <= 32'b11111111_11111001_11001010_11101110;
     #10;
-    nextAddress <= 32'b00000000_11111001_11001010_11101110;
+    // expected output: 0x00F9CA04
+    nextAddress <= 32'b00000000_11111001_11001010_00000000;
     #10;
-    nextAddress <= 32'b11111111_11111001_11001010_11101110;
+    // expected output: 0x80898A72
+    nextAddress <= 32'b10000000_10001001_10001010_01101110;
     $finish;
   end
 
