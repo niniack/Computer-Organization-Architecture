@@ -1,8 +1,7 @@
 **PLEASE BUILD THE FILE**
 
 Notes:
---  the code folder holds all .v files
-	--  the tests folder within the code folder holds all the test benches
+--  the code folder holds all .v files, including the top-level-tb
 --  the report folder holds the pdf of the report
 
 
@@ -12,7 +11,10 @@ Build Instructions:
 2. Run the following command:
 --  make
 
-This should automatically open gtkwave with all the signals ready to be imported
+3. Run: 
+-- gtkwave *.vcd
 
-3. Run the following command for clean-up:
+This should open gtkwave with all the signals ready to be imported
+
+4. Run the following command for clean-up:
 -- make clean
