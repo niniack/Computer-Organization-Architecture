@@ -1,0 +1,92 @@
+[*]
+[*] GTKWave Analyzer v3.3.101 (w)1999-2019 BSI
+[*] Tue Oct  1 20:24:11 2019
+[*]
+[dumpfile] "/home/niniack/github/Computer-Organization-Architecture/submissions/lab/LAB05/nsa325_nishant_aswani_lab05/code/top-level.vcd"
+[dumpfile_mtime] "Tue Oct  1 20:18:52 2019"
+[dumpfile_size] 13019
+[savefile] "/home/niniack/github/Computer-Organization-Architecture/submissions/lab/LAB05/nsa325_nishant_aswani_lab05/code/top-level-wave.gtkw"
+[timestart] 5
+[size] 1853 1025
+[pos] -1 -1
+*-2.376029 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_level_tb.
+[treeopen] top_level_tb.tl.
+[sst_width] 225
+[signals_width] 190
+[sst_expanded] 1
+[sst_vpaned_height] 301
+@200
+-Instruction Fetch 
+@28
+top_level_tb.tl.clk
+@24
+top_level_tb.tl.PCout[31:0]
+@22
+top_level_tb.tl.IMout[31:0]
+@200
+-
+-Register File
+@28
+top_level_tb.tl.clk
+@22
+top_level_tb.tl.PCout[31:0]
+top_level_tb.tl.rf.readRegisterOne[4:0]
+top_level_tb.tl.rf.readRegisterTwo[4:0]
+top_level_tb.tl.rf.writeRegister[4:0]
+top_level_tb.tl.rf.readDataOne[31:0]
+top_level_tb.tl.rf.readDataTwo[31:0]
+top_level_tb.tl.rf.writeData[31:0]
+@200
+-
+-Control Logic
+@28
+top_level_tb.tl.clk
+@22
+top_level_tb.tl.ctrl.opcode[5:0]
+@28
+top_level_tb.tl.ctrl.RegWrite
+top_level_tb.tl.ctrl.RegDst
+top_level_tb.tl.ctrl.ALUSrc
+top_level_tb.tl.ctrl.MemRead
+top_level_tb.tl.ctrl.MemWrite
+top_level_tb.tl.ctrl.MemtoReg
+top_level_tb.tl.Branch
+top_level_tb.tl.BranchCtrl
+top_level_tb.tl.ALUzero
+top_level_tb.tl.ctrl.Jump
+@200
+-
+-ALU Control
+@28
+top_level_tb.tl.clk
+@22
+top_level_tb.tl.aluctrl.funct[5:0]
+@28
+top_level_tb.tl.aluctrl.ALUOp[1:0]
+top_level_tb.tl.aluctrl.ALUControl[2:0]
+@200
+-
+-ALU
+@28
+top_level_tb.tl.alu.clk
+@24
+top_level_tb.tl.PCout[31:0]
+@28
+top_level_tb.tl.alu.funct[2:0]
+@22
+top_level_tb.tl.alu.inA[31:0]
+top_level_tb.tl.alu.inB[31:0]
+top_level_tb.tl.alu.out[31:0]
+@28
+top_level_tb.tl.alu.zero
+@200
+-
+-Register Tracking
+@22
+top_level_tb.tl.t0[31:0]
+top_level_tb.tl.t1[31:0]
+top_level_tb.tl.t2[31:0]
+top_level_tb.tl.datmem[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
