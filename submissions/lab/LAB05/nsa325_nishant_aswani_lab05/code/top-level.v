@@ -239,6 +239,10 @@ module top_level(clk,rst);
   assign SLLJOut[27:2] = IMout[25:0];
   assign SLLJOut[1:0] = 0;
 
+  ////////////////////////
+  /// JUMP SHIFT LOGIC ///
+  ////////////////////////
+
   assign jumpAddress = {PCin[31:28], SLLJOut[27:0]};
 
 
