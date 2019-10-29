@@ -2,7 +2,7 @@
 // Name: Nishant Aswani
 // Instructor: Cristoforos Vasilatos
 // Course: Computer Organization and Architecture (ENGR-UH 3511) Fall 2019
-// Due: Oct 02 2019
+// Due: Oct 09 2019
 
 `ifndef CONTROL_v
 `define CONTROL_v

@@ -25,7 +25,7 @@ module data_memory(clk,
   reg [31:0] mem[127:0];        // 2D array to store dummy values
 
   initial begin
-    mem[0] <= 32'h1CEB00DA;  //  0x1CEB00DA (icebooda)
+    mem[0] <= 32'h00000005;  
     mem[1] <= 32'hBAAAAAAD;  //  0xBAAAAAAD (baaaaaad)
     mem[2] <= 32'hBADDCAFE;  //  0xBADDCAFE (baddcafe)
     mem[3] <= 32'hCAFED00D;  //  0xCAFED00D (cafedude)

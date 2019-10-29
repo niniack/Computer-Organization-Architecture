@@ -1,0 +1,168 @@
+[*]
+[*] GTKWave Analyzer v3.3.101 (w)1999-2019 BSI
+[*] Tue Oct 29 17:13:27 2019
+[*]
+[dumpfile] "/home/niniack/github/Computer-Organization-Architecture/submissions/lab/LAB007/nsa325_nishant_aswani_lab07/code_forwarding/top-level.vcd"
+[dumpfile_mtime] "Tue Oct 29 16:40:27 2019"
+[dumpfile_size] 28136
+[savefile] "/home/niniack/github/Computer-Organization-Architecture/submissions/lab/LAB007/nsa325_nishant_aswani_lab07/code_forwarding/top-level-wave.gtkw"
+[timestart] 0
+[size] 1920 1052
+[pos] -1 -1
+*-1.994966 8 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_level_tb.
+[treeopen] top_level_tb.tl.
+[sst_width] 225
+[signals_width] 262
+[sst_expanded] 1
+[sst_vpaned_height] 491
+@200
+-Program Counter
+@28
+top_level_tb.tl.pc.clk
+@22
+top_level_tb.tl.PCnext[31:0]
+top_level_tb.tl.PCout[31:0]
+@200
+-
+-Pipeline Stage 1
+@28
+top_level_tb.tl.clk
+@22
+top_level_tb.tl.PCnext[31:0]
+top_level_tb.tl.s1_pcnext_pr.in[31:0]
+top_level_tb.tl.IMout[31:0]
+top_level_tb.tl.s1_im_pr.in[31:0]
+@200
+-
+-Pipeline Stage 2
+@28
+top_level_tb.tl.pc.clk
+@22
+top_level_tb.tl.PCnext_IF_ID[31:0]
+top_level_tb.tl.IMout_IF_ID[31:0]
+@200
+-
+@22
+top_level_tb.tl.rf.readRegisterOne[4:0]
+top_level_tb.tl.rf.readRegisterTwo[4:0]
+top_level_tb.tl.rf.writeRegister[4:0]
+top_level_tb.tl.rf.writeData[31:0]
+@28
+top_level_tb.tl.rf.writeEnable
+@200
+-
+-Pipeline Stage 3
+@28
+top_level_tb.tl.clk
+@22
+top_level_tb.tl.PCnext_ID_EX[31:0]
+@200
+-
+@22
+top_level_tb.tl.RFout1_ID_EX[31:0]
+top_level_tb.tl.ALUin1[31:0]
+@200
+-
+@22
+top_level_tb.tl.RFout2_ID_EX[31:0]
+top_level_tb.tl.SextOut_ID_EX[31:0]
+top_level_tb.tl.ALUin2[31:0]
+@200
+-
+@22
+top_level_tb.tl.IMSelOne_ID_EX[4:0]
+top_level_tb.tl.IMSelTwo_ID_EX[4:0]
+top_level_tb.tl.immux.out[4:0]
+@24
+top_level_tb.tl.ALUout[31:0]
+@200
+-
+-Pipeline Stage 4
+@24
+top_level_tb.tl.ALUout_EX_MEM[31:0]
+@22
+top_level_tb.tl.RFout2_EX_MEM[31:0]
+@200
+-
+@22
+top_level_tb.tl.DMout[31:0]
+top_level_tb.tl.RFWriteReg_EX_MEM[4:0]
+@200
+-
+@24
+top_level_tb.tl.t0[31:0]
+top_level_tb.tl.t1[31:0]
+top_level_tb.tl.t2[31:0]
+@200
+-
+-ALU
+@24
+top_level_tb.tl.ALUin1[31:0]
+top_level_tb.tl.ALUin2[31:0]
+@200
+-
+-
+-
+-Control
+@28
+top_level_tb.tl.ctrl.ALUSrc
+top_level_tb.tl.ctrl.ALUOp[1:0]
+top_level_tb.tl.ctrl.Branch
+top_level_tb.tl.ctrl.Jump
+top_level_tb.tl.ctrl.MemRead
+top_level_tb.tl.ctrl.MemWrite
+top_level_tb.tl.ctrl.MemtoReg
+top_level_tb.tl.ctrl.RegDst
+top_level_tb.tl.ctrl.RegWrite
+top_level_tb.tl.ctrl.Stall_Data_Hazard
+top_level_tb.tl.ctrl.opcode[5:0]
+@200
+-
+-Read After Write (RAW) Hazard
+@28
+top_level_tb.tl.pc.clk
+@200
+-
+@28
+top_level_tb.tl.fwd.RegWrite_EX_MEM
+@22
+top_level_tb.tl.fwd.RFWriteReg_EX_MEM[4:0]
+top_level_tb.tl.fwd.RegisterRs_ID_EX[4:0]
+top_level_tb.tl.fwd.RegisterRt_ID_EX[4:0]
+@200
+-
+@28
+top_level_tb.tl.fwd.RegWrite_MEM_WB
+@22
+top_level_tb.tl.fwd.RFWriteReg_MEM_WB[4:0]
+top_level_tb.tl.fwd.RegisterRs_ID_EX[4:0]
+top_level_tb.tl.fwd.RegisterRt_ID_EX[4:0]
+@200
+-
+@28
+top_level_tb.tl.fwd.ForwardA[1:0]
+top_level_tb.tl.fwd.ForwardB[1:0]
+@200
+-
+-
+-Res of Forwarding
+@28
+top_level_tb.tl.pc.clk
+@200
+-
+@22
+top_level_tb.tl.ALUin1[31:0]
+top_level_tb.tl.ALUin2[31:0]
+top_level_tb.tl.ALUout[31:0]
+@200
+-
+@24
+top_level_tb.tl.t0[31:0]
+top_level_tb.tl.t1[31:0]
+top_level_tb.tl.t2[31:0]
+@200
+-
+-
+[pattern_trace] 1
+[pattern_trace] 0

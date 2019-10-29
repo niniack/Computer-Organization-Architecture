@@ -41,9 +41,11 @@ module top_level(clk,rst);
   wire [31:0] IMout;              // instruction from IM
 
   // Register File
-  wire [31:0] RFout1;       // register 1 output
-  wire [31:0] RFout2;       // register 2 output
-  wire [31:0] RFWriteData;  // data to be written in
+  wire [4:0] RegisterRs_IF_ID;   // register 1 address
+  wire [4:0] RegisterRt_IF_ID;   // register 2 address
+  wire [31:0] RFout1;             // register 1 output
+  wire [31:0] RFout2;             // register 2 output
+  wire [31:0] RFWriteData;        // data to be written in
 
   // RegFile Mux
   wire [4:0] RFWriteReg;    // address of register to be written in
@@ -59,6 +61,9 @@ module top_level(clk,rst);
   wire [31:0] ALUin2;       // argument B for ALU
   wire [31:0] ALUout;       // output from ALU
   wire ALUzero;             // zero flag from ALU
+
+  //ALU Sign Extend and RFOut2 Mux
+  wire [31:0] signExtendMuxOut;
 
   // Data Memory
   wire [31:0] DMout;        // data read from data memory
@@ -86,6 +91,11 @@ module top_level(clk,rst);
 
   // ALU Control
   wire [2:0] ALUControl;
+
+  // Hazard
+  wire Stall_Data_Hazard;
+  wire [1:0] ForwardA;
+  wire [1:0] ForwardB;
 
   //////////////////////////
   //////////////////////////
@@ -141,7 +151,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_alusrc_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(ALUSrc),
     .out(ALUSrc_ID_EX)
@@ -150,7 +160,7 @@ module top_level(clk,rst);
   pipe_register #(2) s2_aluop_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(ALUOp),
     .out(ALUOp_ID_EX)
@@ -159,7 +169,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_regdst_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RegDst),
     .out(RegDst_ID_EX)
@@ -168,7 +178,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_branchctrl_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(BranchCtrl),
     .out(BranchCtrl_ID_EX)
@@ -177,7 +187,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_memread_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemRead),
     .out(MemRead_ID_EX)
@@ -186,7 +196,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_memwrite_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemWrite),
     .out(MemWrite_ID_EX)
@@ -195,7 +205,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_regwrite_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RegWrite),
     .out(RegWrite_ID_EX)
@@ -204,7 +214,7 @@ module top_level(clk,rst);
   pipe_register #(1) s2_memtoreg_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemtoReg),
     .out(MemtoReg_ID_EX)
@@ -220,6 +230,9 @@ module top_level(clk,rst);
   wire [31:0] PCnext_ID_EX;
 
   wire [31:0] jumpAddress_ID_EX;
+
+  wire [4:0] RegisterRs_ID_EX;
+  wire [4:0] RegisterRt_ID_EX;
 
 
   pipe_register s2_rfone_pr(
@@ -284,6 +297,24 @@ module top_level(clk,rst);
     .out(jumpAddress_ID_EX)
     );
 
+  pipe_register #(5) s2_registerRs_pr(
+    .clk(clk),
+    .rst(rst),
+    .hold(hold),
+    .clear(clear),
+    .in(RegisterRs_IF_ID),
+    .out(RegisterRs_ID_EX)
+    );
+
+  pipe_register #(5) s2_registerRt_pr(
+    .clk(clk),
+    .rst(rst),
+    .hold(hold),
+    .clear(clear),
+    .in(RegisterRt_IF_ID),
+    .out(RegisterRt_ID_EX)
+    );
+
 
   /////////////////////////
   //////// STAGE 3 ////////
@@ -300,7 +331,7 @@ module top_level(clk,rst);
   pipe_register #(1) s3_branchctrl_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(BranchCtrl_ID_EX),
     .out(BranchCtrl_EX_MEM)
@@ -309,7 +340,7 @@ module top_level(clk,rst);
   pipe_register #(1) s3_memread_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemRead_ID_EX),
     .out(MemRead_EX_MEM)
@@ -318,7 +349,7 @@ module top_level(clk,rst);
   pipe_register #(1) s3_memwrite_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemWrite_ID_EX),
     .out(MemWrite_EX_MEM)
@@ -327,7 +358,7 @@ module top_level(clk,rst);
   pipe_register #(1) s3_regwrite_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RegWrite_ID_EX),
     .out(RegWrite_EX_MEM)
@@ -336,7 +367,7 @@ module top_level(clk,rst);
   pipe_register #(1) s3_memtoreg_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemtoReg_ID_EX),
     .out(MemtoReg_EX_MEM)
@@ -353,7 +384,7 @@ module top_level(clk,rst);
   pipe_register s3_pcbranch_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(PCbranch),
     .out(PCbranch_EX_MEM)
@@ -362,7 +393,7 @@ module top_level(clk,rst);
   pipe_register #(1) s3_aluzero_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(ALUzero),
     .out(ALUzero_EX_MEM)
@@ -371,7 +402,7 @@ module top_level(clk,rst);
   pipe_register s3_aluout_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(ALUout),
     .out(ALUout_EX_MEM)
@@ -380,7 +411,7 @@ module top_level(clk,rst);
   pipe_register s3_rftwo_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RFout2_ID_EX),
     .out(RFout2_EX_MEM)
@@ -389,20 +420,11 @@ module top_level(clk,rst);
   pipe_register #(5) s3_rfwritereg_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RFWriteReg),
     .out(RFWriteReg_EX_MEM)
     );
-
-  // pipe_register s3_pcnext_pr(
-  //   .clk(clk),
-  //   .rst(rst),
-  //   .hold(hold),
-  //   .clear(clear),
-  //   .in(PCnext_ID_EX),
-  //   .out(PCnext_EX_MEM)
-  //   );
 
   //////// STAGE 4 ////////
 
@@ -414,7 +436,7 @@ module top_level(clk,rst);
   pipe_register #(1) s4_regwrite_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RegWrite_EX_MEM),
     .out(RegWrite_MEM_WB)
@@ -423,7 +445,7 @@ module top_level(clk,rst);
   pipe_register #(1) s4_memtoreg_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(MemtoReg_EX_MEM),
     .out(MemtoReg_MEM_WB)
@@ -437,7 +459,7 @@ module top_level(clk,rst);
   pipe_register s4_dmout_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(DMout),
     .out(DMout_MEM_WB)
@@ -446,7 +468,7 @@ module top_level(clk,rst);
   pipe_register s4_aluout_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(ALUout_EX_MEM),
     .out(ALUout_MEM_WB)
@@ -455,7 +477,7 @@ module top_level(clk,rst);
   pipe_register #(5) s4_rfwritereg_pr(
     .clk(clk),
     .rst(rst),
-    .hold(hold),
+    .hold(1'b0),
     .clear(clear),
     .in(RFWriteReg_EX_MEM),
     .out(RFWriteReg_MEM_WB)
@@ -507,9 +529,9 @@ module top_level(clk,rst);
     .ALUOp(ALUOp),
     .MemWrite(MemWrite),
     .ALUSrc(ALUSrc),
-    .RegWrite(RegWrite)
+    .RegWrite(RegWrite),
+    .Stall_Data_Hazard(Stall_Data_Hazard)
     );
-
 
   register_file rf(
     .clk(clk),
@@ -528,8 +550,15 @@ module top_level(clk,rst);
     .out(SextOut)
     );
 
-  // Stage 3 Modules
+  hazard hzd(
+    .MemRead_ID_EX(MemRead_ID_EX),
+    .RegisterRt_ID_EX(RegisterRt_ID_EX),
+    .RegisterRs_IF_ID(RegisterRs_IF_ID),
+    .RegisterRt_IF_ID(RegisterRt_IF_ID),
+    .Stall_Data_Hazard(Stall_Data_Hazard)
+    );
 
+  // Stage 3 Modules
   shift_left_2 sllb(
     .clk(clk),
     .in(SextOut_ID_EX),
@@ -545,10 +574,10 @@ module top_level(clk,rst);
     .zero(ALUzero)
     );
 
-  mux #(32) alumux(
+  mux #(32) sextmux(
     .inA(RFout2_ID_EX),
     .inB(SextOut_ID_EX),
-    .out(ALUin2),
+    .out(signExtendMuxOut),
     .select(ALUSrc_ID_EX)
     );
 
@@ -563,6 +592,33 @@ module top_level(clk,rst);
       .inB(IMSelTwo_ID_EX),
       .out(RFWriteReg),
       .select(RegDst_ID_EX)
+    );
+
+  forward fwd(
+      .RegWrite_EX_MEM(RegWrite_EX_MEM),
+      .RegWrite_MEM_WB(RegWrite_MEM_WB),
+      .RFWriteReg_EX_MEM(RFWriteReg_EX_MEM),
+      .RFWriteReg_MEM_WB(RFWriteReg_MEM_WB),
+      .RegisterRs_ID_EX(RegisterRs_ID_EX),
+      .RegisterRt_ID_EX(RegisterRt_ID_EX),
+      .ForwardA(ForwardA),
+      .ForwardB(ForwardB)
+    );
+
+  mux3 aluin1mux(
+    .inA(RFout1_ID_EX),
+    .inB(RFWriteData),
+    .inC(ALUout_EX_MEM),
+    .select(ForwardA),
+    .out(ALUin1)
+    );
+
+  mux3 aluin2mux(
+    .inA(signExtendMuxOut),
+    .inB(RFWriteData),
+    .inC(ALUout_EX_MEM),
+    .select(ForwardB),
+    .out(ALUin2)
     );
 
   // Stage 4 Modules
@@ -599,17 +655,30 @@ module top_level(clk,rst);
     if (rst) begin
       PCin <= 32'b0;
     end
+
+    else if (Stall_Data_Hazard == 1'b1) begin
+      PCin <= PCin;
+    end
+
     // otherwise, transfer the PCnext value to PCin
     else begin
       PCin <= PCJumpMUXout;
     end
   end
 
-  /////////////////
-  /// ALU LOGIC ///
-  /////////////////
+  ////////////////////////////////
+  /// INSTRUCTION DECODE LOGIC ///
+  ////////////////////////////////
 
-  assign ALUin1 = RFout1_ID_EX;
+  assign RegisterRs_IF_ID = IMout_IF_ID[25:21];
+  assign RegisterRt_IF_ID = IMout_IF_ID[20:16];
+
+
+  // /////////////////
+  // /// ALU LOGIC ///
+  // /////////////////
+  //
+  // assign ALUin1 = RFout1_ID_EX;
 
   ////////////////////
   /// BRANCH LOGIC ///
@@ -622,8 +691,6 @@ module top_level(clk,rst);
   assign PCbranch = SLLBOut + PCnext_ID_EX;
 
   // stall for branch
-
-
 
   //////////////////
   /// JUMP LOGIC ///
@@ -640,6 +707,12 @@ module top_level(clk,rst);
 
   assign jumpAddress = {PCin[31:28], SLLJOut[27:0]};
 
+  ////////////////////
+  /// HAZARD LOGIC ///
+  ////////////////////
+
+  assign hold = Stall_Data_Hazard;
+
 
   //////////////////
   /// TEST LOGIC ///
@@ -651,7 +724,6 @@ module top_level(clk,rst);
   assign t0 = rf.reg_file[8];
   assign t1 = rf.reg_file[9];
   assign t2 = rf.reg_file[10];
-  assign datmem = dm.mem[1];
 
 
 
