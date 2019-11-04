@@ -1,0 +1,5 @@
+ul2.miss_rate                0.0843 # miss rate (i.e., misses/ref)
+il1.miss_rate                0.0023 # miss rate (i.e., misses/ref)
+dl1.miss_rate                0.0053 # miss rate (i.e., misses/ref)
+sim_num_insn              337341175 # total number of instructions executed
+sim_num_refs              121898461 # total number of loads and stores executed
