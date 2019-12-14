@@ -184,13 +184,14 @@ Below is the code, with comments:
 \begin{verbatim}
 .data
 resultMessage: .asciiz "The fibonacci number is: "
-fibNum: .byte 3             # fibNum
+fibIn: .byte 24             # fibIn
 res: .byte 1                # result
 
 .text
 main:
-  lb $a1, fibNum            # save fibNum into $a1
+  lb $a1, fibIn             # save fibIn into $a1
   li $a2, 1                 # load 1 into $a2
+  beq $a2, $a1, edgeCase    # if fibIn == 1, jump to edgeCase
   jal fibRec                # jump to fibRec label and save return address
 print:
   li $v0, 4                 # code for print_string
@@ -201,17 +202,17 @@ print:
   syscall                   # print out the result
 exit:
   li $v0, 10                # code for exit
-  syscall                   # exit programs
-fibRec:
+  syscall                   # exit programs  
+fibRec: 
   addi $sp, $sp, -12        # decrement stack pointer by 12 bytes
   sw $ra, 8($sp)            # save return address 
-  sw $a1, 4($sp)            # save fibNum
-  sw $a2, 0($sp)            # save fibNum-1
+  sw $a1, 4($sp)            # save fibIn
+  sw $a2, 0($sp)            # save fibIn-1
   
-  addi $a1, $a1, -1         # decrement the fibNum
-  addi $a2, $a1, -1         # subtract the fibNum-1
+  addi $a1, $a1, -1         # decrement the fibIn
+  addi $a2, $a1, -1         # subtract the fibIn-1
   
-  blt $a2, $zero, fibEnd    # if fibNum-1 == 0, start returning
+  blt $a2, $zero, fibEnd    # if fibIn-1 == 0, start returning
   
   jal fibRec                # loop back to beginning
   
@@ -236,16 +237,19 @@ fibEnd:
   jr $ra                    # jump to return address
 inc:
   addi $v1, $v1, 1      
-  j check2                  
+  j check2   
+edgeCase:
+  li $v1, 1                 # loads 1 into result without recursing
+  j print                   # jumps to print instruction
 \end{verbatim}
 \newpage
-The recursive logic is seen below: 
+The recursive logic for n=4 is seen below: 
 
 \begin{center}
   \includegraphics[scale=0.30]{etc/lab3-rec.png}
 \end{center}
 
-\textbf{Not accounting for the print and exit instructions, this recursive implementation of the fib function in assembly is 27 instructions}
+\textbf{Not accounting for the print and exit instructions, this recursive implementation of the fib function in assembly is 30 instructions.}
 
 \end{namedquestion}
 
@@ -258,23 +262,23 @@ The decimal value for the 32 bit constant is 536955172. The first 16 bits lead t
 \begin{lstlisting}
 .text
 main: 
-  lui $\$$t0, 8193              # 8193 = 0010000000000001
-  ori $\$$t0, $\$$t0, 18724         # 18724 = 0100100100100100
+  lui $\$$t1, 8193              # 8193 = 0010000000000001
+  ori $\$$t1, $\$$t1, 18724         # 18724 = 0100100100100100
 exit:
   li $\$$v0, 10                 # code for exit
   syscall                   # exit programs  
 \end{lstlisting}
 
-We could also run the pseudoinstruction \cc{li \$t0, 536955172}, which would break down into the instructions above.
+We could also run the pseudoinstruction \cc{"li \$t1, 536955172"}, which would break down into the instructions above.
 \end{namedquestion}
 
 \begin{namedquestion}{Question 2.40}
 
 We are given \cc{0x00000000} as the current PC address.
 
-Jump instructions store the jump address in 26 bits. The address is then multiplied by 4. The multiplication by 4 actually stores an effective 28 bit value within the jump address, because the last two bits are shaven off. 
+Jump instructions store the jump address in 26 bits. The address is then multiplied by 4, using a shift left logical by 2 operation. The multiplication by 4 actually helps stores 28 bit value within the jump address, because the last two bits are assumed to be zero.
 
-To make it 32 bits, the value is top concatenated with the most significant bits (MSB) of the PC to obtain the final jump address. 
+Then, to make it 32 bits, the value is top concatenated with the most significant bits (MSB) of the PC to obtain the final jump address. 
 
 In this case, the MSB of the binary address are 0010, while the MSB of the PC are 0000. \textbf{Therefore, it would not be possible to use the jump instruction to make a single jump.}
 \end{namedquestion}
@@ -310,11 +314,13 @@ However, 134238401, is a value that requires 28 bits. Thus, it cannot fit the 16
 \end{namedquestion}
 
 \begin{namedquestion}{Question 2.42}
-We are given that the current PC is 0x1FFFF000 and our goal is to get to address \cc{0x20014924}. The next PC address is 0x1FFFF020
+We are given that the current PC is \cc{0x1FFFF000} and our goal is to get to address \cc{0x20014924}. The next PC address is \cc{0x1FFFF020}.
 
 The difference, in decimal, between the next PC address and target address is $536955172-536866848 = 88324$. Dividing it by 4 gives us 22081. 
 
-In binary, this value is $0101 0110 0100 0001$, meaning it fits within 16 bits of the I-type instruction. \textbf{Hence, this branch can be carried out in a single instruction.}
+In binary, this value is $0101 0110 0100 0001$, meaning it fits within 16 bits of the I-type instruction. \\
+
+\textbf{Hence, this branch can be carried out in a single instruction.}
 \end{namedquestion}
 
 \printbibliography

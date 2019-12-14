@@ -1,0 +1,432 @@
+\documentclass[11pt]{exam}
+\newcommand{\myname}{Nishant Aswani}
+\newcommand{\mynetid}{nsa325}
+\newcommand{\myemail}{nsa325@nyu.edu}
+\newcommand{\myhwtype}{Homework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhwnum}{9}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mycoursenumber}{ENGR-UH 3511}
+\newcommand{\myclassname}{Computer Organization and Architecture}
+
+\newcommand{\cc}[1]{\texttt{#1}}
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{hhline}
+\usepackage[utf8]{inputenc}
+
+\usepackage[sorting=none,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+
+% \usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+% Uncomment the following line to get Solarized-themed source listings
+% You will have had to already installed the solarized-light package
+% https://github.com/jez/latex-solarized
+%
+%\usepackage{solarized-light}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{NYU Abu Dhabi}}%
+{\textbf{}}%
+{\textbf{Division of Engineering}}
+
+\pagestyle{head}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[scale=0.15]{etc/NYUAD-alt-logo.jpg}
+\end{center}
+
+{\vspace{1.5em}}
+
+\begin{center}
+    \Huge{\textbf{\mycoursenumber}}\\
+    {\vspace{0.5em}}
+    \Huge{\textbf{\myclassname}}
+\end{center}
+
+{\vspace{10em}}
+
+\begin{center}
+  \begin{tabular}{|rp{5.0cm}lll|}
+    \hline
+    &  &  &  & \\
+    &  &  &  & \\
+    \Large{\textbf{Name:}} & \Large{\myname}
+    
+    \  &  &  & \\
+    \Large{\textbf{Net ID:}} & \Large{\mynetid}
+    
+    \  &  &  & \\
+    \Large{\textbf{Assignment Title:}} & \Large{\myhwtype{} \myhwnum}
+    
+    \
+    
+    \  &  &  & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\
+
+{\newpage}
+
+
+\thispagestyle{plain}
+\begin{center}
+  {\Large \mycoursenumber{} \myhwtype{} \myhwnum} \\
+  \myname{} (\myemail{}) \\
+  \today
+\end{center}
+
+\setcounter{questionCounter}{0}
+
+\begin{namedquestion}{Problem 3.1}
+
+Baseline Performance per loop iteration: 
+
+Delays = 
+LD(1+3) + MULTD(1+4) + DIVD(1+10) + LD(1+3) + FADD.D(1+2) + FADD.D(1+2) + FSD(1+1) + INT ADD/SUB(1 + 1 + 1) + BRANCH(1+1) = \textbf{37}\\
+
+\end{namedquestion}
+
+\begin{namedquestion}{Problem 3.2}
+
+\begin{lstlisting}
+Loop:   fld     f2,0(Rx) 
+I0:     fmul.d  f2,f0,f2 
+I1:     fdiv.d  f8,f2,f0 
+I2:     fld     f4,0(Ry) 
+I3:     fadd.d  f4,f0,f4 
+I4:     fadd.d  f10,f8,f2 
+I5:     fsd     f4,0(Ry) 
+I6:     addi    Rx,Rx,8 
+I7:     addi    Ry,Ry,8 
+I8:     sub     x20,x4,Rx 
+I9:     bnz     x20,Loop 
+\end{lstlisting}
+
+We know that tag I0 depends on tag Loop, hence there will be a stall there. We then update the code by adding \textit{3 stalls after the Loop tag}. 
+
+We also see that tag I1 has a RAW dependency on tag I0, hence we add \textit{4 stalls after the I0 tag}. 
+
+Tag I2 has no dependencies on any of the previous instructions. 
+
+Tag I3 has a RAW dependency on Tag I2, hence we add \textit{2 stall cycles after Tag I2}. 
+
+I4 has a RAW dependency on I1. the DIV.D instruction requires 10 cycles, but only 5 have been completed so far. Hence, we must add \textit{5 stall cycles before Tag I4}
+
+I5 has a RAW dependency on I3, but the instruction has resolved by then. 
+
+I6, I7, I8, I9 do not have any dependencies. 
+
+\newpage
+
+Final:
+
+\begin{lstlisting}
+Loop:   fld     f2,0(Rx) 
+<stall FLD>
+<stall FLD>
+<stall FLD> 
+I0:     fmul.d  f2,f0,f2 
+<stall FMULD>
+<stall FMULD>
+<stall FMULD>
+<stall FMULD>
+I1:     fdiv.d  f8,f2,f0 
+I2:     fld     f4,0(Ry) 
+<stall FLD>
+<stall FLD>
+<stall FLD>
+I3:     fadd.d  f4,f0,f4 
+<stall FDIVD>
+<stall FDIVD>
+<stall FDIVD>
+<stall FDIVD>
+<stall FDIVD>
+I4:     fadd.d  f10,f8,f2 
+I5:     fsd     f4,0(Ry) 
+I6:     addi    Rx,Rx,8 
+I7:     addi    Ry,Ry,8 
+I8:     sub     x20,x4,Rx 
+I9:     bnz     x20,Loop 
+\end{lstlisting}
+
+Delays = 
+LD(1+3) + MULD(1+4) + DIVD(1+5) + LD(1+3) + FADD.D(1) + FADD.D(1) + FSD(1) + INT ADD/SUB(1 + 1 + 1) + BRANCH(1+1) = \textbf{27}\\ 
+
+\end{namedquestion}
+
+\newpage
+
+\begin{namedquestion}{Problem 3.3}
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cc}
+            \toprule
+            Execution Pipe 1 & Execution Pipe 2\\
+            \midrule
+            fld & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            fmuld & \\    
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            fdiv.d & fld\\
+            & <stall>\\
+            & <stall>\\
+            & <stall>\\
+            fadd.d & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            fadd.d & fsd\\
+            addi & addi\\
+            sub & bnz\\
+            & <stall>\\
+
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+In this case we only require \textbf{23 cycles}
+
+\end{namedquestion}
+\newpage
+
+\begin{namedquestion}{Problem 3.4}
+
+If N and N+1 are carried out in parallel and N+1 finishes earlier, this could be hazardous: 
+\begin{itemize}
+\item if N and N+1 were somehow storing their result to the same register. Ordering would imply that N+1 would have the latest result, but if N is slower, it will overwrite and be the latest result
+\item if the pipeline were to abruptly stop and restart, then the last executed instruction would be N+1, even though N wasn't completed. 
+\end{itemize}
+
+I1 and I2 are sent in as a multiple-issue and we see that I2 completes before I1, because there are still stalls in use for I1 even after I3 has begun executing
+
+\end{namedquestion}
+
+\newpage 
+\begin{namedquestion}{Problem 3.5}
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cc}
+            \toprule
+            Execution Pipe 1 & Execution Pipe 2\\
+            \midrule
+            fld (Loop) & fld (I2)\\
+            <stall> & <stall>\\
+            <stall> & <stall>\\
+            <stall> & <stall>\\
+            fmul.d (I0) & fadd.d(I3)\\    
+            <stall> & <stall>\\
+            <stall> & <stall>\\
+            <stall> & fsd(I5)\\
+            <stall> & <stall>\\
+            fdiv.d(I1) & addi(I6)\\
+            <stall> & addi(I7)\\
+            <stall> & sub(I8)\\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            fadd.d (I4) & bnz\\
+            & <stall>\\
+
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+In this case we only require \textbf{22 cycles}
+
+\end{namedquestion}
+
+\newpage
+
+\begin{namedquestion}{Problem 3.6 Part A}
+
+Given 22 total cycles, we count 15 total cycles that did not initiate any instructions. \textbf{Hence, 0.681 fraction of cycles are wasted}.
+
+\end{namedquestion}
+
+\begin{namedquestion}{Problem 3.6 Part B}
+
+U1 is unroll 1; U2 is unroll 2
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cc}
+            \toprule
+            Execution Pipe 1 & Execution Pipe 2\\
+            \midrule
+            fld (Loop U1) & fld (I2 U1)\\
+            fld (Loop U2) & fld (I2 U2)\\
+            <stall> & <stall>\\
+            <stall> & <stall>\\
+            fmul.d (I0 U1) & fadd.d(I3 U1)\\   
+            fmul.d (I0 U2) & fadd.d(I3 U2)\\    
+            <stall> & <stall>\\
+            <stall> & fsd(I5 U1)\\
+            <stall> & fsd(I5 U2)\\
+            fdiv.d(I1 U1) & addi(I6 U1)\\
+            fdiv.d(I1 U2) & addi(I6 U2)\\
+            <stall> & addi(I7 U1)\\
+            <stall> & addi(I7 U2)\\
+            <stall> & sub (I8 U1)\\
+            <stall> & sub (I8 U2)\\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            <stall> & \\
+            fadd.d (I4 U1) &\\
+            fadd.d (I4 U2) &\\
+            bnz & \\
+            & <stall>\\
+            
+
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+\end{namedquestion}
+
+\begin{namedquestion}{Problem 3.6C}
+
+After unrolling, we have 24 cycles for 2 loops, so we are doing 12 cycles per loop.
+
+Without unrolling, we had 22 cycles per loop.
+
+Speedup = $\frac{Old}{New}$ = $\frac{22}{12}$ = 1.83
+
+\textbf{Unrolling makes it 1.833 times faster.}
+
+\end{namedquestion}
+
+\printbibliography
+
+\end{document}
+
+% \begingroup
+%     \medskip
+%     \centering
+%     \def\arraystretch{1.5}
+%         \begin{tabular}{cc}
+%             \toprule
+%             RAW hazard & stall cycles\\
+%             \midrule
+%             Ex to 1st & 2\\
+%             Mem to 1st & 2\\
+%             Ex to 2nd & 1\\
+%             Mem to 2nd & 1\\
+%             Ex to 1st and Mem to 2nd & 2\\
+%             \bottomrule
+%         \end{tabular}
+%     \label{fig:c2table2}
+%     \medskip
+% \endgroup
+
+

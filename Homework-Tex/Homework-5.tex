@@ -1,0 +1,402 @@
+\documentclass[11pt]{exam}
+\newcommand{\myname}{Nishant Aswani}
+\newcommand{\mynetid}{nsa325}
+\newcommand{\myemail}{nsa325@nyu.edu}
+\newcommand{\myhwtype}{Homework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhwnum}{5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mycoursenumber}{ENGR-UH 3511}
+\newcommand{\myclassname}{Computer Organization and Architecture}
+
+\newcommand{\cc}[1]{\texttt{#1}}
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{hhline}
+\usepackage[utf8]{inputenc}
+
+\usepackage[sorting=none,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+
+% \usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+% Uncomment the following line to get Solarized-themed source listings
+% You will have had to already installed the solarized-light package
+% https://github.com/jez/latex-solarized
+%
+%\usepackage{solarized-light}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{NYU Abu Dhabi}}%
+{\textbf{}}%
+{\textbf{Division of Engineering}}
+
+\pagestyle{head}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[scale=0.15]{etc/NYUAD-alt-logo.jpg}
+\end{center}
+
+{\vspace{1.5em}}
+
+\begin{center}
+    \Huge{\textbf{\mycoursenumber}}\\
+    {\vspace{0.5em}}
+    \Huge{\textbf{\myclassname}}
+\end{center}
+
+{\vspace{10em}}
+
+\begin{center}
+  \begin{tabular}{|rp{5.0cm}lll|}
+    \hline
+    &  &  &  & \\
+    &  &  &  & \\
+    \Large{\textbf{Name:}} & \Large{\myname}
+    
+    \  &  &  & \\
+    \Large{\textbf{Net ID:}} & \Large{\mynetid}
+    
+    \  &  &  & \\
+    \Large{\textbf{Assignment Title:}} & \Large{\myhwtype{} \myhwnum}
+    
+    \
+    
+    \  &  &  & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\
+
+{\newpage}
+
+
+\thispagestyle{plain}
+\begin{center}
+  {\Large \mycoursenumber{} \myhwtype{} \myhwnum} \\
+  \myname{} (\myemail{}) \\
+  \today
+\end{center}
+
+\setcounter{questionCounter}{0}
+
+\begin{namedquestion}{Question 4.12.1}
+
+The table shows the number of stall cycles given a RAW hazard type. 
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cc}
+            \toprule
+            RAW hazard & stall cycles\\
+            \midrule
+            Ex to 1st & 2\\
+            Mem to 1st & 2\\
+            Ex to 2nd & 1\\
+            Mem to 2nd & 1\\
+            Ex to 1st and Mem to 2nd & 2\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+\[\text{New CPI} = 1 + 2*(0.05 + 0.2 + 0.1) + 1*(0.05 + 0.1) = 1.85\]
+
+\textbf{\[\text{Fraction of Stalled Cycles} = \frac{0.85}{1.85}*100 = 46\%\]}
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.12.2}
+
+In the case of full forwarding, we can use the following table: 
+
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cc}
+            \toprule
+            RAW hazard & stall cycles\\
+            \midrule
+            Ex to 1st & 0\\
+            Mem to 1st & 1\\
+            Ex to 2nd & 0\\
+            Mem to 2nd & 0\\
+            Ex to 1st and Mem to 2nd & 0\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+\[\text{New CPI} = 1 + 1*(0.2) = 1.2\]
+
+\textbf{\[\text{Fraction of Stalled Cycles} = \frac{0.2}{1.2}*100 = 17\%\]}
+
+\end{namedquestion}
+
+\newpage
+
+\begin{namedquestion}{Question 4.12.3}
+
+In the case of next-cycle forwarding, the fraction of stalled cycles is:
+
+\[\text{$CPI_{NCF}$} = 1 + 1*(0.1+0.1+0.2+0.05) = 1.45\]
+
+Despite next-cycle forwarding, all the cases aside from EX to 1st still require at least a one cycle stall. 
+
+\[\text{Fraction of Stalled Cycles} = \frac{0.45}{1.45}*100 = 31\%\]
+
+In the case of two-cycle forwarding, the CPI is:
+
+\[\text{$CPI_{NCF}$} = 1 + 1*(0.05+0.2+0.1) = 1.35\]
+
+\[\text{Fraction of Stalled Cycles} = \frac{0.55}{1.35}*100 = 26\%\]
+
+\textbf{Hence, it is a better option to use two-cycle forwarding as there is a lower CPI, which leads to a smaller fraction of stalled cycles.}
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.12.4}
+
+In the equation below, the subscript 2 refers to the metrics of the pipelined CPU.
+
+\begin{equation}
+    \begin{split}
+        \text{Speedup} & = \frac{T_1*CPI_1}{T_2*CPI_2} = \frac{590*1.85}{620*1.2} = 1.47
+    \end{split}
+    \label{eq:mutual}
+\end{equation}
+
+We see that adding full forwarding makes the pipeline approximately 1.47 times faster than no pipelining.
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.12.5}
+
+In the equation below, the subscript 2 refers to the metrics of the CPU with time-travel circuitry.
+
+\begin{equation}
+    \begin{split}
+        \text{Speedup} & = \frac{T_1*CPI_1}{T_2*CPI_2} = \frac{620*1.2}{720*1} = 1.03
+    \end{split}
+    \label{eq:mutual}
+\end{equation}
+
+We see that adding time-travel circuitry would make the new implementation 1.03 times faster than the full-forwarding implementation.
+
+
+\end{namedquestion}
+
+
+\newpage
+
+\begin{namedquestion}{Question 4.14.1}
+
+empty space denotes n/a; ** denotes stalling
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccccccccccccccc}
+            \toprule
+            IF & ID & EX & MEM & WB\\
+            # & IF & ID & ** & EX & MEM & WB\\
+            # & # & #  &  #& # & IF & ID & EX & MEM & WB\\
+            # & # & # & #  & # & # & IF & ID & ** & EX & MEM & WB\\
+            # & # & # & # & # & # & # & IF & ** & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & # & # & # & IF & ID & EX & MEM & WB\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.14.2}
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccccccccccccccc}
+            \toprule
+            IF & ID & EX & MEM & WB\\
+            # & IF & ID & ** & EX & MEM & WB\\
+            # & # & IF & ** & ID & EX & MEM & WB\\
+            # & # & # & # & # & IF & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & IF & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & # & IF & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & # & # & IF & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & # & # & # & IF & ID & EX & MEM & WB\\
+            
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.14.3}
+
+\begin{lstlisting}
+    lw r2, 0(r1)
+label1:
+    seq r8, r2, r0
+    bnez, r8, label2
+    lw r3, 0(r2)
+    seq r8, r3, r0
+    bnez r8, label1
+    add r1, r3, r1
+label2:
+    sw r1, 0(r2)
+
+
+\end{lstlisting}
+
+\end{namedquestion}
+\newpage
+\begin{namedquestion}{Question 4.14.4}
+
+In order to support branching in the ID stage, we must account for three cases, each of which is a data hazard. Firstly, we must ensure that the previous instruction is not an R-type instruction that updates the result of any of the compared registers in the given branching instruction. If that is the case, then the branch instruction must be stalled for two cycles and then forwarded. 
+
+The second case refers to when a previous instruction is loading a value from memory into one of the registers being compared. In that case, it must be stalled 2 cycles so that the output of the MEM stage can be forwarded to the ID stage. 
+
+The third case is if two instructions above the current branch instruction is updating the register from data memory. Then, we must stall by one cycle to have access to the updated value through forwarding.
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.14.5}
+
+We know that the original situation requires 14 clock cycles. 
+
+\begingroup
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccccccccccccccc}
+            \toprule
+            IF & ID & EX & MEM & WB\\
+            # & IF & ** &  ** & ID & EX & MEM & WB\\
+            # & # & # & #  & # & IF & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & IF & ** &  ** & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & # &  # & # & IF & ID & EX & MEM & WB\\
+            # & # & # & # & # & # & # & # &  # & # & IF & ID & EX & MEM & WB\\
+            
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+\endgroup
+
+This requires 15 clock cycles. Hence, the speedup is $\frac{14}{15} = 0.933$, implying that moving branching to ID would be slower.
+\end{namedquestion}
+
+\begin{namedquestion}{Question 4.14.6}
+
+% If the next instruction is a branch instruction using one of the operands in the current branch instruction, then we can forward the value from the ID stage of the current instruction to the ID stage of the next instruction without any delays. 
+
+If the branch instruction uses a register which was updated in the previous instruction, then the branch instruction must be stalled until the execution stage has been completed. We can then forward the output of the EX stage to the ID stage of the branch instruction.
+
+Also, if the instruction prior to a branch instruction uses the data memory, then we can forward the value from the MEM stage to the ID stage of the next instruction. 
+
+The forwarding unit in Figure 4.62 requires the same inputs as those described above. Furthermore, the forwarding unit also provides select signals for two muxes. In the case of the new forwarading unit, it would also control select signals for two muxes. These muxes would be placed right before the comparator and would select what the comparator takes as inputs. Hence, the new forwarding unit would have the same complexity as the one shown in Figure 4.62. 
+
+
+    
+\end{namedquestion}
+
+
+\printbibliography
+
+\end{document}
+
