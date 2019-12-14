@@ -1,0 +1,401 @@
+\documentclass[11pt]{exam}
+\newcommand{\myname}{Nishant Aswani}
+\newcommand{\mynetid}{nsa325}
+\newcommand{\myemail}{nsa325@nyu.edu}
+\newcommand{\myhwtype}{Homework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhwnum}{7}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mycoursenumber}{ENGR-UH 3511}
+\newcommand{\myclassname}{Computer Organization and Architecture}
+
+\newcommand{\cc}[1]{\texttt{#1}}
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{hhline}
+\usepackage[utf8]{inputenc}
+
+\usepackage[sorting=none,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+
+% \usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+% Uncomment the following line to get Solarized-themed source listings
+% You will have had to already installed the solarized-light package
+% https://github.com/jez/latex-solarized
+%
+%\usepackage{solarized-light}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{NYU Abu Dhabi}}%
+{\textbf{}}%
+{\textbf{Division of Engineering}}
+
+\pagestyle{head}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[scale=0.15]{etc/NYUAD-alt-logo.jpg}
+\end{center}
+
+{\vspace{1.5em}}
+
+\begin{center}
+    \Huge{\textbf{\mycoursenumber}}\\
+    {\vspace{0.5em}}
+    \Huge{\textbf{\myclassname}}
+\end{center}
+
+{\vspace{10em}}
+
+\begin{center}
+  \begin{tabular}{|rp{5.0cm}lll|}
+    \hline
+    &  &  &  & \\
+    &  &  &  & \\
+    \Large{\textbf{Name:}} & \Large{\myname}
+    
+    \  &  &  & \\
+    \Large{\textbf{Net ID:}} & \Large{\mynetid}
+    
+    \  &  &  & \\
+    \Large{\textbf{Assignment Title:}} & \Large{\myhwtype{} \myhwnum}
+    
+    \
+    
+    \  &  &  & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\
+
+{\newpage}
+
+
+\thispagestyle{plain}
+\begin{center}
+  {\Large \mycoursenumber{} \myhwtype{} \myhwnum} \\
+  \myname{} (\myemail{}) \\
+  \today
+\end{center}
+
+\setcounter{questionCounter}{0}
+
+\begin{namedquestion}{Question 5.11.1}
+
+We first determine how many bits are used for the page offset. Given 4KiB pages (4096 B), we know to use the last 12 bits as a page offset, since $2^{12} = 4096$.  The problem assumes that if there is a page fault, the page number is simply incremented from the current highest value.
+
+The table below shows the final state of the Page Table.\\
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccc}
+            \toprule
+            Index & Valid Bit & Physical Address\\
+            \midrule
+            0 & 1 & 15\\
+            1 & 1 & 13 \\
+            2 & 0 & Disk \\
+            3 & 1 & 6 \\
+            4 & 1 & 9 \\
+            5 & 1 & 11 \\
+            6 & 0 & Disk \\
+            7 & 1 & 4 \\
+            8 & 1 & 14 \\
+            9 & 0 & Disk \\
+            10 & 1 & 3 \\
+            11 & 1 & 12\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+
+
+\newpage
+The following table shows how the TLB is updated at the service of each virtual address. The Virtual Page is determined with the top 20 bits and shown in decimal value. 
+
+In the hit type column, only the most costly action is displayed. For example, given a Page Table Hit, it is already assumed that there was a TLB Miss.\\
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccccc}
+            \toprule
+            Virtual Addr. & VPage & Hit Type & Valid & Tag & PPage\\
+            \midrule
+             & & & 1 & 11 & 12\\                    
+             4669 & 1 & Page Fault & 1 & 7 & 4\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 1 & 13\\
+             \midrule
+             & & & 1 & 0 & 5\\ 
+             2227 & 0 & Page Table Hit & 1 & 7 & 4\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 1 & 13\\
+             \midrule
+             13916 & 3 & TLB Hit & & No Change\\
+             \midrule
+             & & & 1 & 0 & 5\\ 
+             34587 & 8 & Page Fault & 1 & 8 & 14\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 1 & 13\\
+             \midrule
+             & & & 1 & 0 & 5\\ 
+             48870 & 11 & Page Table Hit & 1 & 8 & 14\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 11 & 12\\
+             \midrule
+             12608 & 3 & TLB Hit & & No Change\\
+             \midrule
+             & & & 1 & 12 & 15\\
+             49225 & 12 & Page Fault & 1 & 8 & 14\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 11 & 12\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+\end{namedquestion}
+
+\newpage
+\begin{namedquestion}{Question 5.11.2}
+
+Given 16KiB pages (4096 B), we know to use the last 14 bits as a page offset, since $2^{14} = 16384$.
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccc}
+            \toprule
+            Index & Valid Bit & Physical Address\\
+            \midrule
+            0 & 1 & 15\\
+            1 & 0 & Disk \\
+            2 & 1 & 13 \\
+            3 & 1 & 6 \\
+            4 & 1 & 9 \\
+            5 & 1 & 11 \\
+            6 & 0 & Disk \\
+            7 & 1 & 4 \\
+            8 & 0 & Disk \\
+            9 & 0 & Disk \\
+            10 & 1 & 3 \\
+            11 & 1 & 12\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+\newpage
+
+The following table shows how the TLB is updated at the service of each virtual address. The Virtual Page is determined with the top 18 bits and shown in decimal value. 
+
+In the hit type column, only the most costly action is displayed. For example, given a Page Table Hit, it is already assumed that there was a TLB Miss.\\
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{cccccc}
+            \toprule
+            Virtual Addr. & VPage & Hit Type & Valid & Tag & PPage\\
+            \midrule
+             & & & 1 & 11 & 12\\                    
+             4669 & 0 & Page Table Hit & 1 & 7 & 4\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 0 & 5\\
+             \midrule
+             2227 & 0 & TLB Hit & & No Change\\
+             \midrule
+             13916 & 0 & TLB Hit & & No Change\\
+             \midrule
+             & & & 1 & 2 & 13\\ 
+             34587 & 2 & Page Fault & 1 & 7 & 4\\
+             & & & 1 & 3 & 6\\
+             & & & 1 & 0 & 5\\
+             \midrule
+             48870 & 2 & TLB Hit & & No Change\\
+             \midrule
+             12608 & 0 & TLB Hit & & No Change\\
+             \midrule
+             49225 & 3 & TLB Hit & & No Change\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+\medskip
+
+We see that there is a decrease in page faults by using larger pages. This has the effect of a better CPI, as the system has to access the hard disk fewer times. However, it comes at the added cost of internal fragmentation, where the requested block of memory doesn't fully occupy the allotted space, leading to wasted space. It also increases the time in retrieving the page during a page fault simply because more data is requested.
+
+\newpage
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 5.11.4}
+
+We are given 32 bits for a virtual address, 8KiB page size, and 4 bytes for pageEntrySize. 
+
+8KiB is 8192 bytes, which is $log_{2}(8192) = 13 \text{ bits}$. The remaining 19 bits are used for the virtual tag. 
+
+We know that pageTableSize = numPageEntries * pageEntrySize
+
+numPageEntries = $2^{19} = 524,288 \text{  pages}$. Keeping in mind that we are "running 5 applications that utilize half of the memory available"
+
+pageTableSize = $5 \text{ apps}*(\frac{1}{2}*(524288 * 4\text{ bytes})) = 5 \text{ MiB}$
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 5.11.5}
+
+Given that the page size is 8KiB, we determine that the page offset uses 13 bits, leaving the remaining 19 bits for the virtual tag.
+
+Since the first-level page table has 256 entries, we reserve 8 bits of the 19 bits for the first page. The remaining 11 bits are used to index the second-level page table. This implies that there are 2048 entries in each second level page table. 
+
+Putting all this together, we see that given a single application:
+
+The first page table has 256 entries, each with 6 bytes, resulting in 1.5 KiB.
+
+The second-level page tables would each have 2048 entries, each with 4 bytes, resulting in 8KiB.
+
+Hence, the minimum amount of memory is:
+
+$(5*\frac{1}{2}*1.5 \text{KiB}) + (5*\frac{1}{2}*256*8\text{KiB}) = 5123.75 \text{ B} \approx5 \text{ MiB}$ 
+
+whereas the maximum amount of memory would be: 
+
+$(5*1.5 \text{KiB}) + (5*256*8\text{KiB}) = 10247.5 \text{ B} \approx10 \text{ MiB}$ 
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 5.11.6}
+
+A page size of 8 KiB implies using 13 bits (bits 0-12) for a page offset, in turn using 13 bits for accessing the cache memory.
+
+A 16 KiB cache with 2 words per block is 8 bytes per entry. This results in $\frac{16 \text{KiB}}{8 \text{B}} = 2048 \text{ entries}$.
+
+Given that we have 13 bits to access the cache, we set aside 2 bits for the byte offset and 1 bit for word offset. Hence, we are left with 10 bits to index the cache, implying 1024 entries. 
+
+To account for this discrepancy, if the cache designed with two-way associativity, we are able to have 2048 entries, while having only 10 bits to index the cache.
+
+\end{namedquestion}
+
+
+
+
+
+
+
+
+
+\printbibliography
+
+\end{document}
+
+% \begingroup
+%     \medskip
+%     \centering
+%     \def\arraystretch{1.5}
+%         \begin{tabular}{cc}
+%             \toprule
+%             RAW hazard & stall cycles\\
+%             \midrule
+%             Ex to 1st & 2\\
+%             Mem to 1st & 2\\
+%             Ex to 2nd & 1\\
+%             Mem to 2nd & 1\\
+%             Ex to 1st and Mem to 2nd & 2\\
+%             \bottomrule
+%         \end{tabular}
+%     \label{fig:c2table2}
+%     \medskip
+% \endgroup
+
+

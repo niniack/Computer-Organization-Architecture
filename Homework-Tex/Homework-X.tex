@@ -1,0 +1,356 @@
+\documentclass[11pt]{exam}
+\newcommand{\myname}{Nishant Aswani}
+\newcommand{\mynetid}{nsa325}
+\newcommand{\myemail}{nsa325@nyu.edu}
+\newcommand{\myhwtype}{Homework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhwnum}{10}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mycoursenumber}{ENGR-UH 3511}
+\newcommand{\myclassname}{Computer Organization and Architecture}
+
+\newcommand{\cc}[1]{\texttt{#1}}
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{hhline}
+\usepackage[utf8]{inputenc}
+
+\usepackage[sorting=none,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+
+% \usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+% Uncomment the following line to get Solarized-themed source listings
+% You will have had to already installed the solarized-light package
+% https://github.com/jez/latex-solarized
+%
+%\usepackage{solarized-light}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{NYU Abu Dhabi}}%
+{\textbf{}}%
+{\textbf{Division of Engineering}}
+
+\pagestyle{head}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[scale=0.15]{etc/NYUAD-alt-logo.jpg}
+\end{center}
+
+{\vspace{1.5em}}
+
+\begin{center}
+    \Huge{\textbf{\mycoursenumber}}\\
+    {\vspace{0.5em}}
+    \Huge{\textbf{\myclassname}}
+\end{center}
+
+{\vspace{10em}}
+
+\begin{center}
+  \begin{tabular}{|rp{5.0cm}lll|}
+    \hline
+    &  &  &  & \\
+    &  &  &  & \\
+    \Large{\textbf{Name:}} & \Large{\myname}
+    
+    \  &  &  & \\
+    \Large{\textbf{Net ID:}} & \Large{\mynetid}
+    
+    \  &  &  & \\
+    \Large{\textbf{Assignment Title:}} & \Large{\myhwtype{} \myhwnum}
+    
+    \
+    
+    \  &  &  & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\
+
+{\newpage}
+
+
+\thispagestyle{plain}
+\begin{center}
+  {\Large \mycoursenumber{} \myhwtype{} \myhwnum} \\
+  \myname{} (\myemail{}) \\
+  \today
+\end{center}
+
+\setcounter{questionCounter}{0}
+
+\begin{namedquestion}{Question 3.7}
+
+\textbf{Original}
+\begin{lstlisting}
+Loop:   fld      f2,0(Rx) 
+I0:     fmul.d   f5,f0,f2 
+I1:     fdiv.d   f8,f0,f2 
+I2:     fld      f4,0(Ry) 
+I3:     fadd.d   f6,f0,f4 
+I4:     fadd.d   f10,f8,f2
+I5:     sd       f4,0(Ry) 
+\end{lstlisting}
+
+\textbf{After Register Renaming}
+\begin{lstlisting}
+Loop:   fld      T9,0(Rx) 
+I0:     fmul.d   T10,f0,T9 
+I1:     fdiv.d   T11,f0,T9 
+I2:     fld      T12,0(Ry) 
+I3:     fadd.d   T13,f0,T12 
+I4:     fadd.d   T14,T11,T9
+I5:     sd       T15,0(Ry) 
+\end{lstlisting}
+
+\end{namedquestion}
+
+\newpage
+
+\begin{namedquestion}{Question 3.8}
+
+At t_1, F5 -> T9 \text{ and } F9 -> T10
+
+At t_2, F5 -> T11 \text{ and } F2 -> T12
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccc}
+            \toprule
+            t_0 & t_1 & t_2\\
+            \midrule
+            0 & 0 & 0\\
+            1 & 1 & 1\\
+            2 & 2 & 12\\
+            3 & 3 & 3\\
+            4 & 4 & 4\\
+            5 & 9 & 11\\
+            6 & 6 & 6\\
+            7 & 7 & 7\\
+            8 & 8 & 8\\
+            9 & 10 & 10\\
+            ...&...&...\\
+            62 & 62 & 62\\
+            63 & 63 & 63\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+
+\end{namedquestion}
+
+\begin{namedquestion}{Question 3.9}
+
+Since we are simply adding the same number to itself and saving it to the same register, this accumulates to 40. \\
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{ccc}
+            \toprule
+            Instruction & Operation\\
+            \midrule
+            \cc{addi x1, x1, x1}& 5 + 5 = 10\\
+            \cc{addi x1, x1, x1}& 10 + 10 = 20\\
+            \cc{addi x1, x1, x1}& 20 + 20 = 40\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+\end{namedquestion}
+
+\newpage
+
+\begin{namedquestion}{Question 3.10}
+
+Assuming the ability to reorder instructions to minimize stalls.
+
+We can carry out the two sets of load instructions using the same registers, because there is no data hazard. In the second set, we also send in the addi to add 8 to R2. This updates the R2 register and thus we must change the offset of the store operations. 
+
+Since the registers x3 and x2 are not changed later in the loop, we can immediately store the information back using the store words. By the 4th instruction, the x1 and x3 registers are updated, so we can use it to update the value of x10 and x11. In the next instruction, the x1 and x3 are updated again, hence we can also update x10 and x11 again. Finally, we can subtract x2 from x3 to create x4, which is used to check if the next loop must be executed. We only need to do this subtraction once because we subtract 8 from the x3 value of the second loop, so this accounts for the loop unrolling and doesn't carry out too many loops. \\
+
+\begingroup
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{lllll}
+            \toprule
+            Adder 1 & Adder 2 & Load/Store 1 & Load/Store 2 & Branch \\
+            \midrule
+            && lw x1, 0(x2) &  lw x3, 8(x2)\\
+            addi x2, x2, 8&& lw x1, 16(x2) & lw x3, 24(x2)\\
+            && sw x1, -8(x2) & sw x3, 0(x2) \\
+            addi x10, x1, 1& addi x11, x3, 1 & sw x1, 8(x2) & sw x3, 16(x2) \\
+            addi x10, x1, 1& addi x11, x3, 1 &&\\
+            sub x4, x3, x2 &&&\\
+            &&&& bnz x4, Loop \\
+            \bottomrule
+        \end{tabular}
+    \label{fig:cacheTable}
+    \medskip
+\endgroup
+
+Since we expect that for the first addi to x10 and x11, we will be using values from the first load, any deviation from this could end up using values from the second load. This could be some sort of exception or interrupt that causes even a single stall. 
+
+
+
+\end{namedquestion}
+
+\newpage
+
+\begin{namedquestion}{Question 3.11}
+
+Problem says to assume no forwarding. Also each load/store has 2 extra cycles.
+
+-I1: 2 stalls for load instruction \\
+-I2: 4 stalls because X can only occur after W, since no forwarding\\
+-I3: 4 stalls because D is in use, 2 stalls because no forwarding so X must wait for W, 2 stalls because store\\ 
+-I4: 2 stalls because D is in use, 2 stalls because M is in use \\
+-I5: 4 stalls because X is in use\\
+-I6: 4 stalls because D is in use, 2 stalls because X no forwarding and X must wait for W\\
+
+\begingroup
+\footnotesize{
+
+    \medskip
+    \centering
+    \def\arraystretch{1.5}
+        \begin{tabular}{llccccccccccccccccccccc}
+            \toprule
+            & 1& 2& 3& 4& 5& 6& 7& 8& 9& 10& 11& 12 &13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22\\
+            \midrule
+            lw  x1, 0(x2) & F & D & X & M & * & * &  W\\
+            addi x1, x1, 1 & & F & D & * & * & * & * & X & M & W\\
+            sw  x1, 0(x2) &&& F & * & * & * & * & D & *&* & X & M & *& * & W\\
+            addi x2, x2, 4 &&&&&&&& F & *& *& D & X &* &*&M & W\\
+            sub x4, x3, x2 &&&&&&&&&&& F & D & * & * & *&*&X & M & W\\
+            bnz x4, Loop &&&&&&&&&&&& F & * & * &*&* & D & * & * &X & M & W\\
+            \midrule
+            lw x1, 0(x2) &&&&&&&&&&&&&&&&&&&&&& F\\
+            \bottomrule
+        \end{tabular}
+    \label{fig:c2table2}
+    \medskip
+}
+\endgroup
+
+
+a) 9 cycles are lost to branch overhead (13-21)
+
+b) 4 cycles are wasted with static branch predictor at D stage (18-21)
+
+c) no cycles lost with dynamic branch prediction
+\end{namedquestion}
+
+\printbibliography
+
+\end{document}
+
+% \begingroup
+%     \medskip
+%     \centering
+%     \def\arraystretch{1.5}
+%         \begin{tabular}{cc}
+%             \toprule
+%             RAW hazard & stall cycles\\
+%             \midrule
+%             Ex to 1st & 2\\
+%             Mem to 1st & 2\\
+%             Ex to 2nd & 1\\
+%             Mem to 2nd & 1\\
+%             Ex to 1st and Mem to 2nd & 2\\
+%             \bottomrule
+%         \end{tabular}
+%     \label{fig:c2table2}
+%     \medskip
+% \endgroup
+
+
